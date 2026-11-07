@@ -1,0 +1,128 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Age-specific national rates of potentially preventable hospitalisations due to dental conditions, AIHW Interactive 5.",
+  "width": 720,
+  "height": 405,
+  "padding": 15,
+  "background": "white",
+  "title": {
+    "text": "Which age groups have higher dental hospitalisation rates?",
+    "subtitle": [
+      "Potentially preventable hospitalisations due to dental conditions",
+      "Australia, 2016–17 to 2024–25 · Rates per 1,000 people"
+    ],
+    "anchor": "start",
+    "fontSize": 19,
+    "subtitleFontSize": 12,
+    "offset": 16
+  },
+  "data": {
+    "url": "https://raw.githubusercontent.com/ccha0259/FIT3179-DV2/refs/heads/main/AIHM_hos_for_heatmap.csv",
+    "format": {
+      "type": "csv",
+      "parse": {
+        "Rate_per_1000": "number",
+        "Age_order": "number",
+        "Year_start": "number"
+      }
+    }
+  },
+  "params": [
+    {
+      "name": "showValues",
+      "value": true,
+      "bind": {"input": "checkbox", "name": "Show rates in cells: "}
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "Year",
+      "type": "ordinal",
+      "sort": {"field": "Year_start", "order": "ascending"},
+      "title": "Financial year",
+      "axis": {"labelAngle": 0, "labelPadding": 8}
+    },
+    "y": {
+      "field": "Age_group",
+      "type": "ordinal",
+      "sort": {"field": "Age_order", "order": "ascending"},
+      "title": "Age group (years)",
+      "axis": {"labelPadding": 8}
+    },
+    "tooltip": [
+      {"field": "Year", "type": "ordinal", "title": "Financial year"},
+      {"field": "Age_group", "type": "ordinal", "title": "Age group"},
+      {
+        "field": "Rate_per_1000",
+        "type": "quantitative",
+        "title": "Hospitalisations per 1,000 people",
+        "format": ".1f"
+      }
+    ]
+  },
+  "layer": [
+    {
+      "params": [
+        {
+          "name": "hoverCell",
+          "select": {
+            "type": "point",
+            "fields": ["Year", "Age_group"],
+            "on": "pointerover",
+            "clear": "pointerout"
+          }
+        }
+      ],
+      "mark": {"type": "rect", "strokeWidth": 1.5},
+      "encoding": {
+        "color": {
+          "field": "Rate_per_1000",
+          "type": "quantitative",
+          "title": ["Hospitalisations", "per 1,000 people"],
+          "scale": {"scheme": "blues", "domain": [0, 13]},
+          "legend": {
+            "gradientLength": 260,
+            "format": ".1f",
+            "values": [0, 2, 4, 6, 8, 10, 12]
+          }
+        },
+        "stroke": {
+          "condition": {
+            "param": "hoverCell",
+            "empty": false,
+            "value": "#172f3e"
+          },
+          "value": "white"
+        }
+      }
+    },
+    {
+      "mark": {"type": "text", "fontSize": 13},
+      "encoding": {
+        "text": {
+          "field": "Rate_per_1000",
+          "type": "quantitative",
+          "format": ".1f"
+        },
+        "color": {
+          "condition": {"test": "datum.Rate_per_1000 >= 7", "value": "white"},
+          "value": "#17354a"
+        },
+        "opacity": {"condition": {"test": "showValues", "value": 1}, "value": 0}
+      }
+    }
+  ],
+  "config": {
+    "font": "Arial",
+    "view": {"stroke": null},
+    "axis": {
+      "grid": false,
+      "domain": false,
+      "ticks": false,
+      "labelFontSize": 12,
+      "titleFontSize": 13,
+      "titlePadding": 12
+    },
+    "legend": {"labelFontSize": 11, "titleFontSize": 12}
+  }
+}

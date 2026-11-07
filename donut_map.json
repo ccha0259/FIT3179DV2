@@ -1,0 +1,176 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Subsidised dental care for children, 2024",
+    "subtitle": [
+      "CDBS service mix by state and territory",
+      "Equal-sized donuts show approximate service shares, not numbers of children."
+    ],
+    "anchor": "start",
+    "fontSize": 20,
+    "subtitleFontSize": 12,
+    "offset": 15
+  },
+  "width": 760,
+  "height": 520,
+  "projection": {"type": "equalEarth", "rotate": [-134, -5, 0]},
+  "layer": [
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/ccha0259/FIT3179-DV2/main/australia_states.topojson",
+        "format": {"type": "topojson", "feature": "states"}
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#f3f5f7",
+        "stroke": "#aeb9c2",
+        "strokeWidth": 0.7
+      },
+      "encoding": {
+        "tooltip": [
+          {
+            "field": "properties.state",
+            "type": "nominal",
+            "title": "State or territory"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/ccha0259/FIT3179-DV2/refs/heads/main/AIHM_cdbs.csv",
+        "format": {
+          "type": "csv",
+          "parse": {
+            "Year": "number",
+            "Rate_per_100000": "number",
+            "Order": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "lookup": "Region",
+          "from": {
+            "data": {
+              "url": "https://raw.githubusercontent.com/ccha0259/FIT3179-DV2/main/australia_states.topojson",
+              "format": {"type": "topojson", "feature": "states"}
+            },
+            "key": "properties.state",
+            "fields": ["geometry"]
+          }
+        },
+        {"calculate": "geoCentroid(null, datum.geometry)", "as": "centre"},
+        {"calculate": "datum.centre[0]", "as": "Longitude"},
+        {"calculate": "datum.centre[1]", "as": "Latitude"}
+      ],
+      "encoding": {
+        "longitude": {"field": "Longitude", "type": "quantitative"},
+        "latitude": {"field": "Latitude", "type": "quantitative"}
+      },
+      "layer": [
+        {
+          "transform": [
+            {
+              "stack": "Rate_per_100000",
+              "groupby": ["Region"],
+              "sort": [{"field": "Order", "order": "ascending"}],
+              "offset": "normalize",
+              "as": ["start", "end"]
+            },
+            {"calculate": "datum.end - datum.start", "as": "Share"},
+            {"calculate": "datum.start * 2 * PI", "as": "StartAngle"},
+            {"calculate": "datum.end * 2 * PI", "as": "EndAngle"}
+          ],
+          "mark": {
+            "type": "arc",
+            "innerRadius": 12,
+            "outerRadius": 21,
+            "stroke": "white",
+            "strokeWidth": 0.6
+          },
+          "encoding": {
+            "theta": {
+              "field": "StartAngle",
+              "type": "quantitative",
+              "scale": null,
+              "stack": null
+            },
+            "theta2": {"field": "EndAngle"},
+            "color": {
+              "field": "Service_type",
+              "type": "nominal",
+              "title": "Service type",
+              "scale": {
+                "domain": [
+                  "Diagnostic",
+                  "Preventive",
+                  "Restorative",
+                  "Other services"
+                ],
+                "range": ["#4477AA", "#228833", "#EEAA33", "#AA3377"]
+              },
+              "legend": {
+                "orient": "bottom",
+                "direction": "horizontal",
+                "columns": 4,
+                "labelFontSize": 12,
+                "titleFontSize": 12
+              }
+            },
+            "tooltip": [
+              {
+                "field": "Region",
+                "type": "nominal",
+                "title": "State or territory"
+              },
+              {"field": "Year", "type": "ordinal", "title": "Year"},
+              {
+                "field": "Service_type",
+                "type": "nominal",
+                "title": "Service type"
+              },
+              {
+                "field": "Share",
+                "type": "quantitative",
+                "title": "Approximate share of CDBS services",
+                "format": ".1%"
+              },
+              {
+                "field": "Rate_per_100000",
+                "type": "quantitative",
+                "title": "Services per 100,000 population",
+                "format": ",.0f"
+              }
+            ]
+          }
+        },
+        {
+          "transform": [
+            {
+              "aggregate": [{"op": "count", "as": "rows"}],
+              "groupby": ["Region", "Code", "Longitude", "Latitude"]
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "fontSize": 9,
+            "fontWeight": "bold",
+            "color": "#253746"
+          },
+          "encoding": {
+            "text": {"field": "Code"},
+            "tooltip": [
+              {
+                "field": "Region",
+                "type": "nominal",
+                "title": "State or territory"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "config": {"font": "Arial", "view": {"stroke": null}}
+}

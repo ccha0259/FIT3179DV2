@@ -1,0 +1,173 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Dental visit frequency by age, ABS Patient Experiences 2024–25, Persons section of Tables 14.3 and 14.4. Layout is normalised; labels and tooltips preserve published percentages.",
+  "width": 720,
+  "height": 360,
+  "padding": 20,
+  "background": "white",
+  "title": {
+    "text": "How does dental visit frequency differ by age?",
+    "subtitle": [
+      "Australia, 2024–25 · Visits in the last 12 months",
+      "People aged 15+ who needed to and saw a dental professional."
+    ],
+    "anchor": "start",
+    "fontSize": 21,
+    "subtitleFontSize": 12,
+    "offset": 18
+  },
+  "data": {
+    "url": "https://raw.githubusercontent.com/ccha0259/FIT3179-DV2/refs/heads/main/ABS_dental_visit.csv",
+    "format": {
+      "type": "csv",
+      "parse": {
+        "Age_order": "number",
+        "Frequency_order": "number",
+        "Percent": "number",
+        "MOE95_pp": "number"
+      }
+    }
+  },
+  "transform": [
+    {
+      "stack": "Percent",
+      "groupby": ["Age_group"],
+      "sort": [{"field": "Frequency_order", "order": "ascending"}],
+      "offset": "normalize",
+      "as": ["Start", "End"]
+    },
+    {"calculate": "(datum.Start + datum.End) / 2", "as": "Midpoint"},
+    {"calculate": "format(datum.Percent, '.1f') + '%'", "as": "Percent_label"}
+  ],
+  "encoding": {
+    "y": {
+      "field": "Age_group",
+      "type": "ordinal",
+      "sort": {"field": "Age_order", "order": "ascending"},
+      "title": "Age group (years)",
+      "axis": {"labelPadding": 8, "labelLimit": 160}
+    },
+    "tooltip": [
+      {"field": "Year", "type": "nominal", "title": "Financial year"},
+      {"field": "Age_group", "type": "ordinal", "title": "Age group"},
+      {
+        "field": "Visit_frequency",
+        "type": "ordinal",
+        "title": "Visits in the last 12 months"
+      },
+      {
+        "field": "Percent",
+        "type": "quantitative",
+        "title": "Published ABS percentage (%)",
+        "format": ".1f"
+      },
+      {
+        "field": "MOE95_pp",
+        "type": "quantitative",
+        "title": "95% margin of error (± percentage points)",
+        "format": ".1f"
+      }
+    ]
+  },
+  "layer": [
+    {
+      "params": [
+        {
+          "name": "frequencySelect",
+          "select": {"type": "point", "fields": ["Visit_frequency"]},
+          "bind": "legend"
+        }
+      ],
+      "mark": {"type": "bar", "size": 32},
+      "encoding": {
+        "x": {
+          "field": "Start",
+          "type": "quantitative",
+          "stack": null,
+          "scale": {"domain": [0, 1], "nice": false},
+          "title": "Share within age group (bars scaled to 100%)",
+          "axis": {"format": ".0%", "values": [0, 0.2, 0.4, 0.6, 0.8, 1]}
+        },
+        "x2": {"field": "End"},
+        "color": {
+          "field": "Visit_frequency",
+          "type": "ordinal",
+          "sort": ["One visit", "2–3 visits", "4+ visits"],
+          "title": "Visit frequency",
+          "scale": {
+            "domain": ["One visit", "2–3 visits", "4+ visits"],
+            "range": ["#d8e6f1", "#6baed6", "#2171b5"]
+          },
+          "legend": {
+            "orient": "top",
+            "direction": "horizontal",
+            "columns": 3,
+            "titleOrient": "top",
+            "titleLimit": 220,
+            "labelFontSize": 12,
+            "titleFontSize": 12,
+            "symbolType": "square",
+            "symbolSize": 130
+          }
+        },
+        "opacity": {
+          "condition": {"param": "frequencySelect", "value": 1},
+          "value": 0.25
+        }
+      }
+    },
+    {
+      "mark": {"type": "text", "fontSize": 13, "fontWeight": "bold"},
+      "encoding": {
+        "x": {
+          "field": "Midpoint",
+          "type": "quantitative",
+          "scale": {"domain": [0, 1], "nice": false},
+          "title": "Share within age group (bars scaled to 100%)",
+          "axis": {"format": ".0%", "values": [0, 0.2, 0.4, 0.6, 0.8, 1]}
+        },
+        "text": {"field": "Percent_label"},
+        "color": {
+          "condition": {"test": "datum.Frequency_order == 3", "value": "white"},
+          "value": "#17354a"
+        },
+        "opacity": {
+          "condition": {"param": "frequencySelect", "value": 1},
+          "value": 0.25
+        }
+      }
+    },
+    {
+      "data": {"values": [{}]},
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "lineBreak": "\n",
+        "lineHeight": 15,
+        "fontSize": 11,
+        "color": "#627583"
+      },
+      "encoding": {
+        "x": {"value": 0},
+        "y": {"value": 435},
+        "text": {
+          "value": "Bars scaled to 100%. Labels and tooltips show published ABS percentages.\nPublished percentages may not sum to 100% due to rounding and confidentiality adjustment.\nSource: ABS Patient Experiences, 2024–25, Tables 14.3 and 14.4."
+        },
+        "tooltip": null
+      }
+    }
+  ],
+  "config": {
+    "font": "Arial",
+    "view": {"stroke": null},
+    "axis": {
+      "domain": false,
+      "ticks": false,
+      "grid": false,
+      "labelFontSize": 12,
+      "titleFontSize": 13,
+      "titlePadding": 12
+    }
+  }
+}

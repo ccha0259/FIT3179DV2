@@ -1,0 +1,232 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "width": 660,
+  "height": 590,
+  "padding": 15,
+  "title": {
+    "text": "Where do Australian dentists work?",
+    "subtitle": [
+      "Non-contiguous cartogram: employed dentists, 2024",
+      "State area represents dentist count. Positions are schematic; ACT is offset."
+    ],
+    "anchor": "start",
+    "fontSize": 20,
+    "subtitleFontSize": 12,
+    "offset": 15
+  },
+  "signals": [{"name": "areaPerDentist", "value": 2}],
+  "projections": [
+    {
+      "name": "aus",
+      "type": "equalEarth",
+      "rotate": [-134, 0, 0],
+      "scale": 1000,
+      "translate": [0, 0]
+    }
+  ],
+  "data": [
+    {
+      "name": "dentists",
+      "url": "https://raw.githubusercontent.com/ccha0259/FIT3179-DV2/refs/heads/main/AIHM_employed_dentists_2024.csv",
+      "format": {
+        "type": "csv",
+        "parse": {"Year": "number", "Dentists": "number"},
+        "delimiter": ","
+      }
+    },
+    {
+      "name": "layout",
+      "values": [
+        {
+          "Region": "Western Australia",
+          "Code": "WA",
+          "x0": 150,
+          "y0": 245,
+          "labelX": 150,
+          "labelY": 245
+        },
+        {
+          "Region": "Northern Territory",
+          "Code": "NT",
+          "x0": 250,
+          "y0": 150,
+          "labelX": 250,
+          "labelY": 120
+        },
+        {
+          "Region": "Queensland",
+          "Code": "QLD",
+          "x0": 390,
+          "y0": 150,
+          "labelX": 390,
+          "labelY": 150
+        },
+        {
+          "Region": "South Australia",
+          "Code": "SA",
+          "x0": 240,
+          "y0": 290,
+          "labelX": 240,
+          "labelY": 285
+        },
+        {
+          "Region": "New South Wales",
+          "Code": "NSW",
+          "x0": 400,
+          "y0": 275,
+          "labelX": 400,
+          "labelY": 275
+        },
+        {
+          "Region": "Victoria",
+          "Code": "VIC",
+          "x0": 375,
+          "y0": 395,
+          "labelX": 375,
+          "labelY": 400
+        },
+        {
+          "Region": "Australian Capital Territory",
+          "Code": "ACT",
+          "x0": 470,
+          "y0": 340,
+          "labelX": 500,
+          "labelY": 350
+        },
+        {
+          "Region": "Tasmania",
+          "Code": "TAS",
+          "x0": 390,
+          "y0": 480,
+          "labelX": 430,
+          "labelY": 500
+        }
+      ]
+    },
+    {
+      "name": "states",
+      "url": "https://raw.githubusercontent.com/ccha0259/FIT3179-DV2/main/australia_states.topojson",
+      "format": {"type": "topojson", "feature": "states"},
+      "transform": [
+        {
+          "type": "lookup",
+          "from": "dentists",
+          "key": "Region",
+          "fields": ["properties.state"],
+          "values": ["Year", "Dentists"],
+          "as": ["Year", "Dentists"]
+        },
+        {
+          "type": "lookup",
+          "from": "layout",
+          "key": "Region",
+          "fields": ["properties.state"],
+          "values": ["Code", "x0", "y0", "labelX", "labelY"],
+          "as": ["Code", "x0", "y0", "labelX", "labelY"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum.Dentists) && datum.Dentists > 0"
+        },
+        {"type": "geopath", "projection": "aus", "as": "path"},
+        {
+          "type": "formula",
+          "expr": "geoArea('aus', datum)",
+          "as": "originalArea"
+        },
+        {
+          "type": "formula",
+          "expr": "geoCentroid('aus', datum)",
+          "as": "centre"
+        },
+        {
+          "type": "formula",
+          "expr": "sqrt(areaPerDentist * datum.Dentists / datum.originalArea)",
+          "as": "k"
+        },
+        {
+          "type": "formula",
+          "expr": "datum.x0 - datum.k * datum.centre[0]",
+          "as": "offsetX"
+        },
+        {
+          "type": "formula",
+          "expr": "datum.y0 - datum.k * datum.centre[1]",
+          "as": "offsetY"
+        }
+      ]
+    },
+    {
+      "name": "leaders",
+      "source": "states",
+      "transform": [{"type": "filter", "expr": "datum.labelX != datum.x0"}]
+    }
+  ],
+  "marks": [
+    {
+      "type": "path",
+      "from": {"data": "states"},
+      "encode": {
+        "update": {
+          "path": {"field": "path"},
+          "x": {"field": "offsetX"},
+          "y": {"field": "offsetY"},
+          "scaleX": {"field": "k"},
+          "scaleY": {"field": "k"},
+          "fill": {"value": "#a6c8d8"},
+          "stroke": {"value": "#28566b"},
+          "strokeWidth": {"value": 0.6},
+          "tooltip": {
+            "signal": "{'State or territory': datum.properties.state, 'Year': datum.Year, 'Employed dentists': format(datum.Dentists, ',.0f')}"
+          }
+        }
+      }
+    },
+    {
+      "type": "rule",
+      "from": {"data": "leaders"},
+      "encode": {
+        "update": {
+          "x": {"field": "x0"},
+          "y": {"field": "y0"},
+          "x2": {"signal": "datum.labelX - 18"},
+          "y2": {"field": "labelY"},
+          "stroke": {"value": "#65747c"},
+          "strokeWidth": {"value": 1}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "states"},
+      "encode": {
+        "update": {
+          "x": {"field": "labelX"},
+          "y": {"signal": "datum.labelY - 5"},
+          "text": {"field": "Code"},
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"},
+          "fontSize": {"value": 11},
+          "fontWeight": {"value": "bold"},
+          "fill": {"value": "#132e3a"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "states"},
+      "encode": {
+        "update": {
+          "x": {"field": "labelX"},
+          "y": {"signal": "datum.labelY + 9"},
+          "text": {"signal": "format(datum.Dentists, ',.0f')"},
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"},
+          "fontSize": {"value": 11},
+          "fill": {"value": "#132e3a"}
+        }
+      }
+    }
+  ],
+  "config": {"font": "Arial"}
+}

@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#153d62">
+  <meta name="description" content="Explore twelve interactive visualisations of dentist availability, hospital care, children's dental services and barriers to access in Australia.">
+  <title>Dental Health in Australia</title>
+  <style>
+:root{--navy:#173d5d;--blue:#2e739f;--ink:#34546d;--muted:#627c90;--line:#dbe7ef;--pale:#f2f7fb;--title:"Times New Roman",Times,serif;--body:Arial,Helvetica,sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:auto}body{margin:0;background:#fff;color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.75;-webkit-font-smoothing:antialiased}a{color:#376e95;text-decoration:none}a:hover{text-decoration:underline}.page-width{width:min(1180px,calc(100% - 72px));margin-inline:auto}.masthead{border-bottom:1px solid #e5edf3}.masthead-inner{display:flex;align-items:center;justify-content:space-between;gap:25px;padding-block:24px}.brand{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:700;letter-spacing:1.6px;color:#244a66}.brand-light{font-weight:400;color:#7d98aa}.brand svg{width:25px;height:30px;fill:none;stroke:#397ba7;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.masthead-inner>p{margin:0;color:#8198a9;font-size:14px;font-weight:600;letter-spacing:1.7px}.masthead-inner>p>span{font-weight:400;margin-left:22px;letter-spacing:1px}
+h1,h2{font-family:var(--title);font-weight:400;color:var(--navy)}h3{font-family:var(--body);color:#325772;font-weight:600;line-height:1.45;margin:0}p strong{font-weight:600;color:#315b7a}.eyebrow{font-family:var(--body);font-size:14px;line-height:1.5;letter-spacing:1.6px;font-weight:700;color:#6088a3;margin:0 0 13px;text-transform:uppercase}.hero{display:block;text-align:center;padding-top:67px;padding-bottom:45px}.hero-copy{max-width:800px;margin:0 auto}.hero-copy .eyebrow{font-size:14px;letter-spacing:1.5px}.status-dot{width:5px;height:5px;background:#6b9ec1;border-radius:50%;display:inline-block;margin-right:7px;vertical-align:2px}.hero h1{font-size:clamp(68px,8.1vw,108px);letter-spacing:-4.7px;line-height:1.04;margin:25px 0 25px}.hero h1 em{font-family:var(--title);font-weight:400;color:#5596bd}.hero-deck{font-family:var(--body);font-size:26px;line-height:1.5;letter-spacing:-.15px;color:#4c6d85;margin:0 0 20px}.hero-description{font-size:19px;line-height:1.95;color:#718899;max-width:680px;margin:0 auto}.snapshot{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:#183c5b;color:white;border-radius:3px;padding:28px 7px}.snapshot-item{padding:0 27px;border-right:1px solid #b7d2e32e}.snapshot-item:last-child{border-right:0}.stat-period{font-size:14px;letter-spacing:1px;font-weight:600;color:#bbd2e2}.snapshot-item>strong{font-family:var(--body);display:block;font-size:49px;font-weight:400;letter-spacing:-1.1px;line-height:1.3;margin:14px 0 10px}.snapshot-item>strong span{font-family:var(--body);font-size:34px;margin-left:1px}.snapshot-item>p{font-size:14px;line-height:1.7;color:#d2e2ee;margin:0;min-height:38px}.snapshot-note{font-size:14px;line-height:1.8;color:#7990a2;margin-top:12px;margin-bottom:0}.chapter{padding-top:72px;padding-bottom:72px}.chapter-heading{display:flex;gap:18px;align-items:center;margin-bottom:23px}.chapter-index{font-family:var(--body);display:inline-flex;align-items:center;justify-content:center;width:39px;height:39px;border:1px solid #d6e5f0;border-radius:50%;background:#edf5fa;color:#628fae;font-size:14px;flex:none}.chapter-heading .eyebrow{font-size:14px;letter-spacing:1.5px;margin-bottom:7px}h2{font-size:45px;line-height:1.2;letter-spacing:-.65px;margin:0}.chapter-intro{font-size:18px;line-height:1.95;max-width:990px;color:#647f93;margin:0 0 30px 57px}.chart-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}.chart-card{margin:0;min-width:0;background:#fff;border:1px solid #dfe9f1;border-radius:4px;overflow:hidden}.card-header{padding:21px 23px 16px;border-bottom:1px solid #edf2f6}.chart-kicker{font-family:var(--body);font-size:14px;font-weight:600;letter-spacing:1px;color:#7b95a9;margin:0 0 7px;line-height:1.5}.card-header h3{font-size:18px;letter-spacing:-.1px}.chart-stage{padding:18px 15px 8px;min-height:180px;overflow:auto;scrollbar-width:thin;scrollbar-color:#b3ccdf transparent}.chart-stage .vega-embed{display:block!important;width:100%;padding-right:0!important}.chart-stage .vega-embed>svg{display:block;width:100%;height:auto;max-width:100%;overflow:visible}.chart-stage .vega-actions,.chart-stage .vega-bindings,.chart-stage form,.chart-stage summary{display:none!important}.chart-caption{font-family:var(--body);font-size:14px;line-height:1.85;color:#6d879b;margin:0;padding:12px 23px 20px}.chart-caption a{color:#557d9a}.editorial-row{display:grid;grid-template-columns:1fr 1.7fr;gap:62px;align-items:center;margin-top:42px}.cartogram-row .chart-stage{max-width:520px;margin:auto;padding-inline:6px}.insight{padding:10px 0}.insight h3{font-family:var(--body);font-size:33px;font-weight:400;line-height:1.4;letter-spacing:-.4px;margin:0 0 20px;color:#365f7c}.insight>p{font-size:16px;line-height:1.95;color:#647e92;margin:0 0 16px}.insight .eyebrow{font-size:14px;margin-bottom:17px}.insight-stat{border-top:1px solid var(--line);padding-top:20px;margin:24px 0 19px}.insight-stat strong{font-family:var(--body);font-size:45px;font-weight:400;color:#397fa9;letter-spacing:-1px;line-height:1.35;display:block}.insight-stat span{font-family:var(--body);display:block;font-size:14px;color:#6f8a9e;margin-top:6px}.small-note{font-size:14px!important;line-height:1.9!important;color:#6f8799!important}.chapter-band{background:var(--pale);border-top:1px solid #e8f0f6;border-bottom:1px solid #e8f0f6}.chapter-band .chapter-index{background:#fff}.interpretation-note{font-size:14px;line-height:1.9;color:#718da1;display:flex;gap:10px;margin:17px 1px 35px;align-items:flex-start}.interpretation-note>span{width:14px;height:14px;line-height:13px;flex:none;text-align:center;border:1px solid #acc4d4;border-radius:50%;font-size:14px;margin-top:3px;color:#7b9cb4}.insight-strip{padding:28px 31px;background:#e6f0f7;border-left:3px solid #89b7d4;border-radius:0 3px 3px 0;display:grid;grid-template-columns:1.35fr 1fr;gap:30px;align-items:center;margin-bottom:23px}.insight-strip .eyebrow{font-size:14px;margin-bottom:10px}.insight-strip h3{font-size:30px;font-weight:400;letter-spacing:-.5px;line-height:1.4;margin-bottom:8px}.insight-strip p{font-size:15px;color:#6c899e;margin:0;line-height:1.85}.strip-number{display:flex;gap:18px;align-items:center;padding-left:24px;border-left:1px solid #cedeeb}.strip-number strong{font-family:var(--body);font-size:54px;line-height:1;font-weight:400;color:#377eaa;letter-spacing:-1px}.strip-number span{font-family:var(--body);font-size:14px;line-height:1.8;color:#6b8aa0}.full-chart{margin-top:22px}.full-chart .card-header{padding:22px 26px 16px}.full-chart .card-header h3{font-size:19px}.full-chart .chart-stage{padding:20px 25px 9px}.full-chart .chart-caption{padding-inline:26px}.figure-intro{display:grid;grid-template-columns:1.1fr 1fr;gap:65px;align-items:center;margin:46px 0 22px;padding-top:25px;border-top:1px solid var(--line)}.figure-intro .eyebrow{font-size:14px;margin-bottom:10px}.figure-intro h3{font-family:var(--body);font-size:28px;font-weight:400;letter-spacing:-.3px;line-height:1.5}.figure-intro>p{font-size:16px;line-height:1.95;color:#678397;margin:0}.children-row{grid-template-columns:.85fr 1.65fr;gap:60px;margin-top:31px}.quiet-callout{font-size:14px;line-height:1.9;color:#6b899f;background:#f0f6fa;border-left:2px solid #a3c8df;padding:17px 19px;margin-top:23px}.scatter-row{grid-template-columns:1.65fr .85fr;gap:60px;margin-top:38px}.scatter-row .insight h3{font-size:31px}.sankey-stage .vega-embed>svg{min-width:870px}.parallel-stage .vega-embed>svg{min-width:760px}.access-takeaways{display:grid;grid-template-columns:1fr 1fr;gap:42px;padding:23px 27px;border-block:1px solid #dbe7ef;margin:23px 0 28px}.access-takeaways>div+div{border-left:1px solid #d7e5ef;padding-left:39px}.access-takeaways span{font-size:14px;font-weight:600;letter-spacing:1.4px;color:#7392a9}.access-takeaways p{font-size:16px;line-height:1.95;color:#627f94;margin:7px 0 0}.access-takeaways strong{color:#3177a1}.closing{max-width:760px;text-align:center;padding-top:67px;padding-bottom:61px}.closing .eyebrow{font-size:14px}.closing h2{font-size:54px;margin-bottom:20px;color:#335d7b}.closing p:not(.eyebrow){font-family:var(--body);max-width:650px;font-size:16px;line-height:1.95;color:#6e8699;margin:0 auto}.sources{border-top:1px solid var(--line);padding-top:39px;padding-bottom:56px}.sources-heading{margin-bottom:25px}.sources-heading .eyebrow{font-size:14px;margin-bottom:9px}.sources h2{font-size:40px}.source-block{padding:20px 0 0;border-top:1px solid #e0eaf1;margin-top:25px}.source-block>h3{font-family:var(--body);font-size:16px;font-weight:600;color:#4f7591;margin-bottom:19px}.source-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:29px;padding-bottom:12px}.source-grid h3{font-size:14px;color:#4c718d;margin-bottom:10px}.source-grid p{font-family:var(--body);font-size:14px;line-height:1.9;color:#6e8598;margin:0 0 11px}.source-grid a{font-size:14px;color:#467d9f}.method-notes{max-width:1000px;padding-bottom:6px}.method-notes p{font-family:var(--body);font-size:14px;line-height:1.95;color:#6f879a;margin:11px 0}.method-notes strong{color:#53778f}.site-footer{background:#183b56;color:#b9d0e0}.footer-inner{display:flex;align-items:center;justify-content:space-between;gap:30px;padding-block:29px}.footer-brand{font-family:var(--body);font-size:14px;letter-spacing:1.3px;font-weight:600;color:#d6e7f1}.footer-brand span{font-family:var(--body);font-size:14px;letter-spacing:1px;display:block;margin-top:5px;font-weight:400;color:#99bbd1}.footer-inner p{font-family:var(--body);font-size:14px;line-height:1.9;color:#a5c2d6;margin:0}.loading-note{font-family:var(--body);font-size:14px;color:#7a96aa;display:flex;align-items:center;justify-content:center;min-height:180px}.chart-error{font-size:15px;color:#657f93;padding:40px 20px;text-align:center}.icon-arrow{width:11px;height:11px;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;vertical-align:-1px;display:inline-block}.noscript{font-family:var(--body);padding:20px;text-align:center;background:#e9f4fa;font-size:16px}#vg-tooltip-element{font-family:Arial,sans-serif!important;font-size:14px!important;color:#355871!important;border:1px solid #d1e3ef!important;border-radius:3px!important;box-shadow:0 4px 17px #173e5e22!important;padding:10px!important}
+@media(max-width:1000px){.snapshot-item{padding-inline:21px}.stat-period{font-size:14px}.snapshot-item>strong{font-size:43px}.snapshot-item>p{font-size:14px}.editorial-row{gap:33px}.insight h3{font-size:29px}.chapter-intro{margin-left:56px}.figure-intro{gap:35px}.source-grid{gap:23px}.strip-number{padding-left:18px}.strip-number strong{font-size:45px}.strip-number span{font-size:15px}}
+@media(max-width:800px){.page-width{width:calc(100% - 40px)}.masthead-inner{padding-block:20px}.hero{padding-top:51px;padding-bottom:35px}.hero h1{font-size:83px;letter-spacing:-4px}.hero-deck{font-size:24px}.hero-description{font-size:18px}.snapshot-item{padding-inline:16px}.snapshot-item>strong{font-size:38px}.snapshot-item>strong span{font-size:28px}.snapshot-item>p{font-size:14px}.stat-period{font-size:14px;letter-spacing:.65px}.chapter{padding-block:56px}h2{font-size:39px}.chapter-heading{gap:14px}.chapter-intro{font-size:16px;margin-left:53px}.chart-grid{gap:15px}.card-header{padding:18px 15px 13px}.card-header h3{font-size:15px}.chart-kicker{font-size:14px;letter-spacing:.7px}.chart-stage{padding:13px 7px 6px}.chart-caption{font-size:14px;padding:10px 15px 16px}.editorial-row{gap:27px;grid-template-columns:1fr 1.5fr}.insight>p{font-size:15px}.insight-stat strong{font-size:39px}.insight-stat span{font-size:14px}.scatter-row{grid-template-columns:1.5fr 1fr}.scatter-row .insight h3{font-size:28px}.figure-intro h3{font-size:26px}.figure-intro>p{font-size:15px}.insight-strip{padding:23px 25px;gap:19px}.insight-strip h3{font-size:28px}.strip-number strong{font-size:44px}.source-grid{grid-template-columns:1fr 1fr;gap:25px 35px}}
+@media(max-width:600px){.page-width{width:calc(100% - 32px)}.masthead-inner{padding-block:18px;gap:15px}.brand{font-size:14px;letter-spacing:1.1px;gap:7px}.brand svg{width:22px;height:26px}.masthead-inner>p{font-size:14px;letter-spacing:1px}.masthead-inner>p>span{display:block;margin:3px 0 0;letter-spacing:.6px}.hero{text-align:left;padding-top:37px;padding-bottom:29px}.hero-copy .eyebrow{font-size:14px;line-height:1.8;letter-spacing:1px}.hero h1{font-size:76px;letter-spacing:-4px;line-height:1.03;margin:21px 0 23px}.hero-deck{font-size:23px;line-height:1.65;margin-bottom:17px}.hero-description{font-size:18px;line-height:1.9}.snapshot{grid-template-columns:1fr 1fr;padding:7px 0}.snapshot-item{padding:20px 17px;border-right:1px solid #b7d2e32e}.snapshot-item:nth-child(2){border-right:0}.snapshot-item:nth-child(-n+2){border-bottom:1px solid #b7d2e32e}.snapshot-item>strong{font-size:41px;margin:11px 0 9px}.snapshot-item>strong span{font-size:30px}.snapshot-item>p{font-size:14px;min-height:33px;line-height:1.8}.stat-period{font-size:14px;letter-spacing:.7px}.snapshot-note{font-size:14px;line-height:1.8;margin-top:10px}.chapter{padding-block:43px}.chapter-heading{gap:12px;align-items:flex-start;margin-bottom:18px}.chapter-index{width:30px;height:30px;font-size:14px;margin-top:4px}.chapter-heading .eyebrow{font-size:14px;letter-spacing:1.1px;margin-bottom:7px}h2{font-size:38px;letter-spacing:-.4px;line-height:1.23}.chapter-intro{font-size:15px;line-height:1.95;margin-left:0;margin-bottom:23px}.chart-grid{grid-template-columns:1fr;gap:17px}.card-header{padding:18px 16px 14px}.card-header h3{font-size:16px}.chart-kicker{font-size:14px;letter-spacing:.8px}.chart-stage{padding:13px 9px 5px}.chart-caption{font-size:14px;line-height:1.9;padding:11px 16px 17px}.editorial-row{display:flex;flex-direction:column;align-items:stretch;gap:21px;margin-top:30px}.insight{padding:0 3px}.insight h3,.scatter-row .insight h3{font-size:30px;line-height:1.5;margin-bottom:17px}.insight h3 br{display:none}.insight>p{font-size:15px;line-height:1.95;margin-bottom:14px}.insight .eyebrow{font-size:14px;margin-bottom:13px}.insight-stat{padding-top:16px;margin:18px 0;display:flex;align-items:center;gap:17px}.insight-stat strong{font-size:40px}.insight-stat span{font-size:14px;max-width:150px;margin-top:0}.small-note{font-size:14px!important}.cartogram-row .chart-stage{max-width:400px}.interpretation-note{font-size:14px;line-height:1.9;margin:15px 0 27px;gap:8px}.insight-strip{display:block;padding:23px 20px;margin-bottom:18px}.insight-strip h3{font-size:29px}.insight-strip p{font-size:14px;line-height:1.85}.strip-number{padding-left:0;border-left:0;border-top:1px solid #cedeeb;padding-top:18px;margin-top:18px;gap:18px}.strip-number strong{font-size:49px}.strip-number span{font-size:14px}.full-chart .card-header{padding:18px 16px 14px}.full-chart .card-header h3{font-size:16px}.full-chart .chart-stage{padding:13px 8px 6px}.full-chart .chart-caption{padding-inline:16px}.full-chart .chart-stage:not(.sankey-stage):not(.parallel-stage) .vega-embed>svg{min-width:600px}.figure-intro{display:block;margin:32px 0 20px;padding-top:22px}.figure-intro h3{font-size:28px;line-height:1.5;margin-bottom:15px}.figure-intro .eyebrow{font-size:14px;margin-bottom:10px}.figure-intro>p{font-size:15px;line-height:1.95}.quiet-callout{font-size:14px;line-height:1.85;padding:14px 16px;margin-top:17px}.scatter-row{flex-direction:column-reverse}.access-takeaways{display:block;padding:18px 17px;margin:19px 0 24px}.access-takeaways>div+div{border-left:0;padding-left:0;border-top:1px solid #d7e5ef;padding-top:16px;margin-top:16px}.access-takeaways span{font-size:14px}.access-takeaways p{font-size:15px;line-height:1.9}.closing{padding-block:42px;text-align:left}.closing h2{font-size:44px;margin-bottom:17px}.closing p:not(.eyebrow){font-size:15px;line-height:1.95}.closing .eyebrow{font-size:14px}.sources{padding-top:31px;padding-bottom:41px}.sources h2{font-size:38px}.source-block{padding-top:21px;margin-top:24px}.source-block>h3{font-size:15px;margin-bottom:19px}.source-grid{grid-template-columns:1fr;gap:23px;padding-bottom:0}.source-grid h3{font-size:15px;margin-bottom:9px}.source-grid p{font-size:14px;line-height:1.95;margin-bottom:9px}.method-notes p{font-size:14px;line-height:1.95}.footer-inner{flex-wrap:wrap;align-items:flex-start;gap:20px;padding-block:25px}.footer-brand{font-size:14px}.footer-inner p{font-size:14px;max-width:235px}}
+@media print{.page-width{width:100%}.masthead-inner{padding:8px 0}.hero{padding:20px 0}.hero h1{font-size:64px}.chapter{padding:26px 0}.chart-card{break-inside:avoid}.chapter-band{background:#fff}.chart-stage{overflow:visible}.snapshot{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+</style>
+  <script src="https://cdn.jsdelivr.net/npm/vega@6.4.0" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@6.5.0" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@7.3.0" defer></script>
+  <script src="visuals.js" defer></script><style>
+/* Start at the title, with no masthead or introductory label above it. */
+.hero{padding-top:28px}.hero h1{margin-top:0}
+/* Keep the two dentist maps together, including on narrow screens. */
+.dentist-comparison-scroll{max-width:100%;overflow-x:auto;scrollbar-width:thin}
+#dentist-comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;min-width:680px}
+#dentist-comparison .chart-card{min-width:0;display:flex;flex-direction:column}
+#dentist-comparison .chart-stage{flex:1;display:flex;align-items:center;justify-content:center;padding-bottom:20px}
+.chart-stage{padding-bottom:18px}
+@media(max-width:800px){#dentist-comparison{gap:16px;min-width:640px}}
+</style><style id="hospital-and-footer-layout">
+/* Keep the historical hospitalisation maps side by side. */
+.hospital-comparison-scroll{
+  max-width:100%;
+  overflow-x:auto;
+  scrollbar-width:thin;
+}
+#hospital-comparison{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:24px;
+  min-width:680px;
+}
+#hospital-comparison .chart-card{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+}
+#hospital-comparison .chart-stage{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding-bottom:20px;
+}
+
+.project-footer{
+  background:#172b4d;
+  color:#bdcbe0;
+  font-family:Arial,Helvetica,sans-serif;
+  padding:36px 0 40px;
+}
+.project-footer-inner{
+  width:min(1440px,calc(100% - 80px));
+  margin-inline:auto;
+}
+.project-footer p{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:18px;
+  line-height:1.85;
+}
+.project-footer .project-data{margin-top:6px}
+.project-footer p strong{color:#f1f6ff;font-weight:700}
+.project-footer a{color:#c5d8f0;text-decoration:underline;text-underline-offset:3px}
+.project-footer a:hover{color:#fff}
+.project-footer a:focus-visible{outline:2px solid #e4efff;outline-offset:3px}
+@media(max-width:800px){#hospital-comparison{gap:16px;min-width:640px}}
+@media(max-width:600px){
+  .project-footer{padding:28px 0 30px}
+  .project-footer-inner{width:calc(100% - 32px)}
+  .project-footer p{font-size:15px;line-height:1.9}
+  .project-footer .project-data{margin-top:10px}
+}
+</style><style id="single-page-format">
+/* Fit the full dashboard width; never hide overflow to disguise a wide chart. */
+.page-width,.hero-copy,.chapter,.chart-grid,.editorial-row,.chart-card,.insight{
+  min-width:0;
+  max-width:100%;
+}
+.chart-card{overflow:visible}
+.chart-stage{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  overflow:visible;
+}
+/* vegaEmbed adds its class to the chart container itself, not to a child. */
+.chart-stage.vega-embed{
+  display:block!important;
+  width:100%!important;
+  max-width:100%;
+  min-width:0;
+}
+.chart-stage.vega-embed>svg{
+  display:block;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  height:auto!important;
+}
+.dentist-comparison-scroll,.hospital-comparison-scroll{
+  width:100%;
+  min-width:0;
+  max-width:100%;
+  overflow:visible;
+}
+#dentist-comparison,#hospital-comparison{
+  width:100%;
+  min-width:0;
+  max-width:100%;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+.editorial-row{grid-template-columns:minmax(0,1fr) minmax(0,1.7fr)}
+.children-row{grid-template-columns:minmax(0,.85fr) minmax(0,1.65fr)}
+.scatter-row{grid-template-columns:minmax(0,1.65fr) minmax(0,.85fr)}
+
+/* image beside the main title; the insertion line is in .title-row. */
+.title-row{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:clamp(12px,2vw,24px);
+  margin-bottom:25px;
+}
+.title-row h1{margin:0;min-width:0}
+.title-image{
+  display:block;
+  width:clamp(64px,12vw,124px);
+  height:auto;
+  max-width:24%;
+  object-fit:contain;
+  flex:none;
+}
+@media(max-width:600px){
+  .title-row{justify-content:flex-start;gap:12px;margin-bottom:23px}
+  .title-row h1{font-size:clamp(50px,13vw,76px);letter-spacing:-2px}
+  #dentist-comparison,#hospital-comparison{gap:12px;min-width:0}
+}
+</style>
+<style id="larger-content-layout">
+/* Spacing for the larger page text. The main h1 retains its original sizes. */
+.snapshot-item,.chapter-heading>div,.figure-intro>div,.access-takeaways>div{
+  min-width:0;
+}
+.stat-period{display:block;line-height:1.5}
+.snapshot-item>p{min-height:0}
+.chapter-heading h2,.card-header h3,.insight h3,.figure-intro h3{
+  overflow-wrap:break-word;
+}
+.interpretation-note>span{width:20px;height:20px;line-height:18px}
+@media(max-width:1000px){
+  .snapshot{grid-template-columns:repeat(2,minmax(0,1fr));padding:7px 0}
+  .snapshot-item{padding:22px 26px}
+  .snapshot-item:nth-child(2){border-right:0}
+  .snapshot-item:nth-child(-n+2){border-bottom:1px solid #b7d2e32e}
+}
+@media(max-width:800px){
+  .editorial-row{display:flex;flex-direction:column;align-items:stretch;gap:28px}
+  .scatter-row{flex-direction:column-reverse}
+}
+@media(max-width:600px){
+  .snapshot-item{padding:20px 17px}
+}
+@media(max-width:420px){
+  .snapshot{grid-template-columns:minmax(0,1fr)}
+  .snapshot-item{border-right:0}
+  .snapshot-item:not(:last-child){border-bottom:1px solid #b7d2e32e}
+}
+</style>
+</head>
+<body>
+  <main id="top">
+    <section class="hero page-width" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <div class="title-row"><h1 id="hero-title">Dental Health in Australia</h1>
+        <img src="title-image.png" alt="Australia" class="title-image">
+        </div><p class="hero-deck">Lets take a look on the dental health in Australia on 2024</p>
+        <p class="hero-description">Explore twelve visualisations of Australia’s dental workforce, hospital care and dental services.</p>
+        </div>
+      </section>
+
+    <section class="snapshot page-width" aria-label="Four national headline figures">
+      <div class="snapshot-item"><span class="stat-period">WORKFORCE · 2024</span><strong>62.1</strong><p>FTE dentists per<br>100,000 people</p></div>
+      <div class="snapshot-item"><span class="stat-period">HOSPITAL CARE · 2024–25</span><strong>89,181</strong><p>potentially preventable<br>dental hospitalisations</p></div>
+      <div class="snapshot-item"><span class="stat-period">CHILDREN’S CARE · 2024</span><strong>5.29<span>m</span></strong><p>services provided under the<br>Child Dental Benefits Schedule</p></div>
+      <div class="snapshot-item"><span class="stat-period">ACCESS · 2024–25</span><strong>13.8<span>%</span></strong><p>of people aged 15+ who needed<br>dental care made no visit</p></div>
+    </section>
+    <p class="snapshot-note page-width">Calendar years and financial years are labelled separately. Each measure describes a different part of the dental health system.</p>
+
+    <section class="chapter page-width" id="workforce" aria-labelledby="workforce-title">
+      <div class="chapter-heading"><span class="chapter-index">01</span><div><p class="eyebrow">THE WORKFORCE</p><h2 id="workforce-title">Does Australia have enough dentist?</h2></div></div>
+      <p class="chapter-intro">National dentist availability rose from <strong>56.5 to 62.1 full-time-equivalent dentists per 100,000 people</strong> between 2014 and 2024. The state-level picture still varies: in 2024, the rate ranged from 35.4 in the Northern Territory to 66.9 in the ACT.</p>
+
+      <div class="dentist-comparison-scroll" aria-label="Dentist availability maps for 2014 and 2024"><div class="chart-grid comparison-grid" id="dentist-comparison">
+        <figure class="chart-card" data-chart="dentists-2014"><figcaption class="card-header"><div><p class="chart-kicker">A DECADE AGO</p><h3>Dentist availability, 2014</h3></div></figcaption><div class="chart-stage" id="dentists-2014"><span class="loading-note">Loading the map…</span></div></figure>
+        <figure class="chart-card" data-chart="dentists-2024"><figcaption class="card-header"><div><p class="chart-kicker">THE RECENT PICTURE</p><h3>Dentist availability, 2024</h3></div></figcaption><div class="chart-stage" id="dentists-2024"><span class="loading-note">Loading the map…</span></div></figure>
+      </div>
+
+      </div><div class="editorial-row cartogram-row">
+        <aside class="insight"><p class="eyebrow">CAPACITY &amp; HEADCOUNT</p><h3>Two ways to see<br>the workforce.</h3><p>The choropleths compare workforce capacity relative to population. The cartogram shows the number of employed dentists, with state areas scaled to their reported headcounts.</p><div class="insight-stat"><strong id="state-dentists">18,343</strong><span id="state-dentists-caption">employed dentists nationally in 2024</span></div><p class="small-note">A dentist headcount and a full-time-equivalent rate measure different things.</p></aside>
+        <figure class="chart-card" data-chart="dentist-cartogram"><figcaption class="card-header"><div><p class="chart-kicker">2024 · NUMBER OF EMPLOYED DENTISTS</p><h3>The workforce, resized</h3></div></figcaption><div class="chart-stage cartogram-stage" id="dentist-cartogram"><span class="loading-note">Loading the cartogram…</span></div></figure>
+      </div>
+    </section>
+
+    <div class="chapter-band"><section class="chapter page-width" id="hospital-care" aria-labelledby="hospital-title">
+      <div class="chapter-heading"><span class="chapter-index">02</span><div><p class="eyebrow">HOSPITAL CARE</p><h2 id="hospital-title">A closer look at care in hospital.</h2></div></div>
+      <p class="chapter-intro">Australia recorded <strong>65,194 potentially preventable dental hospitalisations in 2014–15</strong> and <strong>89,181 in 2024–25</strong>. Comparing state counts shows the volume of hospital care. Population-based rates reveal another part of the picture.</p>
+
+      <div class="hospital-comparison-scroll" aria-label="Dental hospitalisation maps for 2014–15 and 2024–25"><div class="chart-grid comparison-grid" id="hospital-comparison">
+        <figure class="chart-card" data-chart="hospitalisations-2014"><figcaption class="card-header"><div><p class="chart-kicker">2014–15 · HOSPITALISATION COUNT</p><h3>Hospital care a decade ago</h3></div></figcaption><div class="chart-stage" id="hospitalisations-2014"><span class="loading-note">Loading the map…</span></div></figure>
+        <figure class="chart-card" data-chart="hospitalisations-2024"><figcaption class="card-header"><div><p class="chart-kicker">2024–25 · HOSPITALISATION COUNT</p><h3>The recent hospital picture</h3></div></figcaption><div class="chart-stage" id="hospitalisations-2024"><span class="loading-note">Loading the map…</span></div></figure>
+      </div>
+      </div><p class="interpretation-note"><span aria-hidden="true">i</span> Larger populations can generate more admissions. These counts describe hospital activity; they do not measure an individual’s risk of hospitalisation.</p>
+
+      <div class="insight-strip"><div><p class="eyebrow">AGE MAKES A DIFFERENCE</p><h3>Children aged 5–9 stand out.</h3><p>This age group had the highest dental hospitalisation rate in every year shown.</p></div><div class="strip-number"><strong>12.5</strong><span>hospitalisations per 1,000 children aged 5–9<br>in 2024–25, compared with 9.5 in 2016–17</span></div></div>
+      <figure class="chart-card full-chart" data-chart="hospitalisation-heatmap"><figcaption class="card-header"><div><p class="chart-kicker">2016–17 TO 2024–25 · NATIONAL RATES</p><h3>How do hospitalisation rates vary by age and year?</h3></div></figcaption><div class="chart-stage" id="hospitalisation-heatmap"><span class="loading-note">Loading the heatmap…</span></div></figure>
+
+      <div class="figure-intro"><div><p class="eyebrow">THE PROCEDURE MIX</p><h3>Oral surgery accounts for the largest share.</h3></div><p><strong>40.7%</strong> of the 491,275 hospital dental procedures recorded in 2024–25 were oral surgery. One admission can involve more than one procedure.</p></div>
+      <figure class="chart-card full-chart" data-chart="dental-treemap"><figcaption class="card-header"><div><p class="chart-kicker">2024–25 · NUMBER OF PROCEDURES</p><h3>What procedures are performed in hospital?</h3></div></figcaption><div class="chart-stage" id="dental-treemap"><span class="loading-note">Loading the treemap…</span></div></figure>
+    </section></div>
+
+    <section class="chapter page-width" id="children" aria-labelledby="children-title">
+      <div class="chapter-heading"><span class="chapter-index">03</span><div><p class="eyebrow">CHILDREN’S SUBSIDISED CARE</p><h2 id="children-title">What does children’s dental care provide?</h2></div></div>
+      <p class="chapter-intro">The <strong>Child Dental Benefits Schedule (CDBS)</strong> subsidises basic dental services for eligible children. Its 5,286,544 recorded services in 2024 offer a view of the care provided through the program.</p>
+
+      <div class="editorial-row children-row">
+        <aside class="insight"><p class="eyebrow">START WITH THE MIX</p><h3>A different mix<br>in every state.</h3><p>Each donut shows how a state’s CDBS services are divided among diagnostic, preventive, restorative and other services.</p><p>Compare the proportions, then hover to see the published rates behind them.</p><div class="quiet-callout">Equal-sized donuts show approximate service shares. They do not represent numbers of children.</div></aside>
+        <figure class="chart-card" data-chart="cdbs-donut-map"><figcaption class="card-header"><div><p class="chart-kicker">2024 · STATE AND TERRITORY SERVICE SHARES</p><h3>The service mix across Australia</h3></div></figcaption><div class="chart-stage" id="cdbs-donut-map"><span class="loading-note">Loading the service map…</span></div></figure>
+      </div>
+
+      <div class="editorial-row scatter-row">
+        <figure class="chart-card" data-chart="cdbs-scatterplot"><figcaption class="card-header"><div><p class="chart-kicker">2024 · SERVICES PER 100,000 POPULATION</p><h3>Preventive and restorative care together</h3></div></figcaption><div class="chart-stage" id="cdbs-scatterplot"><span class="loading-note">Loading the scatterplot…</span></div></figure>
+        <aside class="insight"><p class="eyebrow">LOOK BEYOND THE SHARE</p><h3>Similar prevention rates.<br>Different treatment rates.</h3><p>Queensland and South Australia recorded similar preventive service rates in 2024. Queensland’s restorative rate was higher: <strong>2,195 compared with 1,716</strong> services per 100,000 population.</p><p class="small-note">This is an association between service rates. Eligibility, participation and treatment needs can all affect the pattern.</p></aside>
+      </div>
+
+      <div class="figure-intro"><div><p class="eyebrow">FROM CATEGORIES TO SERVICES</p><h3>Nearly half of CDBS services were preventive.</h3></div><p>Preventive services accounted for <strong>48.2%</strong> of the national total in 2024. Follow the ribbons to see the detailed services within each category.</p></div>
+      <figure class="chart-card full-chart" data-chart="cdbs-sankey"><figcaption class="card-header"><div><p class="chart-kicker">2024 · 5,286,544 RECORDED SERVICES</p><h3>How are subsidised dental services distributed?</h3></div></figcaption><div class="chart-stage sankey-stage" id="cdbs-sankey"><span class="loading-note">Loading the service breakdown…</span></div></figure>
+    </section>
+
+    <div class="chapter-band"><section class="chapter page-width" id="access" aria-labelledby="access-title">
+      <div class="chapter-heading"><span class="chapter-index">04</span><div><p class="eyebrow">ACCESS &amp; AGE</p><h2 id="access-title">Who still faces barriers to care?</h2></div></div>
+      <p class="chapter-intro">Having services available is one part of access. Among people aged 15+ who needed dental care in 2024–25, <strong>13.8% made no visit at all</strong>, and <strong>16.1% delayed or did not use care with cost a reason</strong>.</p>
+      <div class="access-takeaways"><div><span>YOUNGER ADULTS</span><p>Around <strong>22%</strong> of those aged 25–34 and 35–44 reported cost as a reason for delay or non-use.</p></div><div><span>OLDER ADULTS</span><p>Among people aged 75–84 who needed care, <strong>8.7%</strong> were placed on a public dental waiting list.</p></div></div>
+      <figure class="chart-card full-chart" data-chart="dental-access"><figcaption class="card-header"><div><p class="chart-kicker">2024–25 · PEOPLE AGED 15+ WHO NEEDED DENTAL CARE</p><h3>How do access barriers differ by age?</h3></div></figcaption><div class="chart-stage parallel-stage" id="dental-access"><span class="loading-note">Loading the age comparison…</span></div></figure>
+
+      <div class="figure-intro"><div><p class="eyebrow">AMONG THOSE WHO RECEIVED CARE</p><h3>Visit frequency also differs by age.</h3></div><p>The next chart considers people who needed to and saw a dental professional. Two to three visits made up a larger share in older age groups.</p></div>
+      <figure class="chart-card full-chart" data-chart="dental-visit-frequency"><figcaption class="card-header"><div><p class="chart-kicker">2024–25 · VISITS IN THE PRECEDING 12 MONTHS</p><h3>How often did people visit a dental professional?</h3></div></figcaption><div class="chart-stage" id="dental-visit-frequency"><span class="loading-note">Loading the visit comparison…</span></div></figure>
+    </section></div>
+
+    <section class="closing page-width"><p class="eyebrow">READING THE WHOLE PICTURE</p><h2>Availability. Treatment. Access.</h2><p>Workforce rates show capacity, hospital data describe activity and survey results reveal barriers. Read together, these measures help explain why the experience of dental care varies across Australia.</p></section>
+
+    </main>
+
+  <noscript><p class="noscript">Enable JavaScript to view the twelve visualisations.</p></noscript>
+
+
+<footer class="project-footer" id="sources" aria-label="Project credits and data sources">
+  <div class="project-footer-inner">
+    <p class="project-credit"><strong>Dental Health in Australia</strong> · FIT3179 Data Visualisation 2 · Made by Chan Chew Theng</p>
+    <p class="project-data"><strong>Data sources:</strong> Australian Institute of Health and Welfare (AIHW), <em>Oral health and dental care in Australia</em>: <a id="source-workforce" href="https://www.aihw.gov.au/reports/dental-oral-health/oral-health-and-dental-care-in-australia/contents/dental-workforce" target="_blank" rel="noopener">dental workforce</a> (2014 and 2024), <a id="source-hospitals" href="https://www.aihw.gov.au/reports/dental-oral-health/oral-health-and-dental-care-in-australia/contents/hospitalisations" target="_blank" rel="noopener">hospitalisations</a> (2014–15 to 2024–25), and the <a id="source-cdbs" href="https://www.aihw.gov.au/reports/dental-oral-health/oral-health-and-dental-care-in-australia/contents/dental-care/child-dental-benefits-schedule" target="_blank" rel="noopener">Child Dental Benefits Schedule</a> (2024; underlying data from Services Australia); <a id="source-abs" href="https://www.abs.gov.au/statistics/health/health-services/patient-experiences/2024-25" target="_blank" rel="noopener">Australian Bureau of Statistics</a>, <em>Patient Experiences, 2024–25</em>, Tables 14.3 and 14.4.</p>
+  </div>
+</footer></body>
+</html>

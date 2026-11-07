@@ -1,0 +1,410 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Parallel coordinates plot of four ABS dental-access indicators by age group. Published percentages and margins of error, Persons section of Tables 14.3 and 14.4.",
+  "width": 900,
+  "height": 400,
+  "padding": 20,
+  "background": "white",
+  "title": {
+    "text": "How do dental access barriers differ by age?",
+    "subtitle": [
+      "Australia, 2024–25 · Persons aged 15 years and over",
+      "Within each age group: percentage of people who needed dental care.",
+      "Cost measures refer to delay/non-use. Indicators overlap and should not be added."
+    ],
+    "anchor": "start",
+    "fontSize": 21,
+    "subtitleFontSize": 12,
+    "offset": 24
+  },
+  "data": {
+    "url": "https://raw.githubusercontent.com/ccha0259/FIT3179-DV2/refs/heads/main/ABS_dental_access.csv",
+    "format": {
+      "type": "csv",
+      "parse": {
+        "Age_order": "number",
+        "Indicator_order": "number",
+        "Percent": "number",
+        "MOE95_pp": "number"
+      }
+    }
+  },
+  "params": [
+    {
+      "name": "ageSelect",
+      "value": "All",
+      "bind": {
+        "input": "select",
+        "options": [
+          "All",
+          "15–24",
+          "25–34",
+          "35–44",
+          "45–54",
+          "55–64",
+          "65–74",
+          "75–84",
+          "85 and over"
+        ],
+        "name": "Highlight age group: "
+      }
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "Indicator_order",
+      "type": "quantitative",
+      "scale": {"domain": [0.75, 4.25], "nice": false},
+      "axis": {
+        "title": null,
+        "values": [1, 2, 3, 4],
+        "labelExpr": "datum.value == 1 ? 'No visit despite need' : datum.value == 2 ? 'Cost a reason' : datum.value == 3 ? 'Cost not a reason' : 'Public waiting list'",
+        "labelAngle": 0,
+        "labelPadding": 20,
+        "labelFontSize": 13,
+        "labelLimit": 260,
+        "labelOverlap": false,
+        "domain": false,
+        "ticks": false,
+        "grid": false
+      }
+    }
+  },
+  "layer": [
+    {
+      "transform": [
+        {
+          "aggregate": [{"op": "count", "as": "Records"}],
+          "groupby": ["Indicator_order"]
+        }
+      ],
+      "mark": {"type": "rule", "color": "#b7c3cd", "strokeWidth": 1},
+      "encoding": {
+        "y": {
+          "datum": 0,
+          "type": "quantitative",
+          "scale": {"domain": [0, 25], "nice": false},
+          "axis": null
+        },
+        "y2": {"datum": 25}
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {"Indicator_order": 1, "Tick": 0},
+          {"Indicator_order": 1, "Tick": 5},
+          {"Indicator_order": 1, "Tick": 10},
+          {"Indicator_order": 1, "Tick": 15},
+          {"Indicator_order": 1, "Tick": 20},
+          {"Indicator_order": 1, "Tick": 25},
+          {"Indicator_order": 2, "Tick": 0},
+          {"Indicator_order": 2, "Tick": 5},
+          {"Indicator_order": 2, "Tick": 10},
+          {"Indicator_order": 2, "Tick": 15},
+          {"Indicator_order": 2, "Tick": 20},
+          {"Indicator_order": 2, "Tick": 25},
+          {"Indicator_order": 3, "Tick": 0},
+          {"Indicator_order": 3, "Tick": 5},
+          {"Indicator_order": 3, "Tick": 10},
+          {"Indicator_order": 3, "Tick": 15},
+          {"Indicator_order": 3, "Tick": 20},
+          {"Indicator_order": 3, "Tick": 25},
+          {"Indicator_order": 4, "Tick": 0},
+          {"Indicator_order": 4, "Tick": 5},
+          {"Indicator_order": 4, "Tick": 10},
+          {"Indicator_order": 4, "Tick": 15},
+          {"Indicator_order": 4, "Tick": 20},
+          {"Indicator_order": 4, "Tick": 25}
+        ]
+      },
+      "mark": {
+        "type": "tick",
+        "orient": "horizontal",
+        "size": 8,
+        "color": "#8e9eaa"
+      },
+      "encoding": {
+        "y": {
+          "field": "Tick",
+          "type": "quantitative",
+          "scale": {"domain": [0, 25], "nice": false},
+          "axis": null
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {"Indicator_order": 1, "Tick": 0},
+          {"Indicator_order": 1, "Tick": 5},
+          {"Indicator_order": 1, "Tick": 10},
+          {"Indicator_order": 1, "Tick": 15},
+          {"Indicator_order": 1, "Tick": 20},
+          {"Indicator_order": 1, "Tick": 25},
+          {"Indicator_order": 2, "Tick": 0},
+          {"Indicator_order": 2, "Tick": 5},
+          {"Indicator_order": 2, "Tick": 10},
+          {"Indicator_order": 2, "Tick": 15},
+          {"Indicator_order": 2, "Tick": 20},
+          {"Indicator_order": 2, "Tick": 25},
+          {"Indicator_order": 3, "Tick": 0},
+          {"Indicator_order": 3, "Tick": 5},
+          {"Indicator_order": 3, "Tick": 10},
+          {"Indicator_order": 3, "Tick": 15},
+          {"Indicator_order": 3, "Tick": 20},
+          {"Indicator_order": 3, "Tick": 25},
+          {"Indicator_order": 4, "Tick": 0},
+          {"Indicator_order": 4, "Tick": 5},
+          {"Indicator_order": 4, "Tick": 10},
+          {"Indicator_order": 4, "Tick": 15},
+          {"Indicator_order": 4, "Tick": 20},
+          {"Indicator_order": 4, "Tick": 25}
+        ]
+      },
+      "transform": [
+        {"calculate": "format(datum.Tick, '.0f') + '%'", "as": "TickLabel"}
+      ],
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "baseline": "middle",
+        "dx": -8,
+        "fontSize": 11,
+        "color": "#627583"
+      },
+      "encoding": {
+        "y": {
+          "field": "Tick",
+          "type": "quantitative",
+          "scale": {"domain": [0, 25], "nice": false},
+          "axis": null
+        },
+        "text": {"field": "TickLabel"}
+      }
+    },
+    {
+      "mark": {"type": "line", "interpolate": "linear"},
+      "encoding": {
+        "y": {
+          "field": "Percent",
+          "type": "quantitative",
+          "scale": {"domain": [0, 25], "nice": false},
+          "axis": null
+        },
+        "color": {
+          "field": "Age_group",
+          "type": "nominal",
+          "title": "Age group (years)",
+          "scale": {
+            "domain": [
+              "15–24",
+              "25–34",
+              "35–44",
+              "45–54",
+              "55–64",
+              "65–74",
+              "75–84",
+              "85 and over"
+            ],
+            "range": [
+              "#4477AA",
+              "#EE7733",
+              "#228833",
+              "#CCBB44",
+              "#66CCEE",
+              "#AA3377",
+              "#332288",
+              "#777777"
+            ]
+          },
+          "legend": {
+            "orient": "right",
+            "labelFontSize": 12,
+            "titleFontSize": 13,
+            "labelLimit": 140,
+            "symbolStrokeWidth": 3
+          }
+        },
+        "detail": {"field": "Age_group"},
+        "order": {"field": "Indicator_order", "type": "quantitative"},
+        "opacity": {
+          "condition": {
+            "test": "ageSelect == 'All' || datum.Age_group == ageSelect",
+            "value": 0.85
+          },
+          "value": 0.1
+        },
+        "strokeWidth": {
+          "condition": {
+            "test": "ageSelect != 'All' && datum.Age_group == ageSelect",
+            "value": 3.5
+          },
+          "value": 2
+        }
+      }
+    },
+    {
+      "mark": {"type": "point", "filled": true, "size": 55},
+      "encoding": {
+        "y": {
+          "field": "Percent",
+          "type": "quantitative",
+          "scale": {"domain": [0, 25], "nice": false},
+          "axis": null
+        },
+        "color": {
+          "field": "Age_group",
+          "type": "nominal",
+          "title": "Age group (years)",
+          "scale": {
+            "domain": [
+              "15–24",
+              "25–34",
+              "35–44",
+              "45–54",
+              "55–64",
+              "65–74",
+              "75–84",
+              "85 and over"
+            ],
+            "range": [
+              "#4477AA",
+              "#EE7733",
+              "#228833",
+              "#CCBB44",
+              "#66CCEE",
+              "#AA3377",
+              "#332288",
+              "#777777"
+            ]
+          },
+          "legend": {
+            "orient": "right",
+            "labelFontSize": 12,
+            "titleFontSize": 13,
+            "labelLimit": 140,
+            "symbolStrokeWidth": 3
+          }
+        },
+        "detail": {"field": "Age_group"},
+        "opacity": {
+          "condition": {
+            "test": "ageSelect == 'All' || datum.Age_group == ageSelect",
+            "value": 1
+          },
+          "value": 0.1
+        },
+        "tooltip": [
+          {"field": "Age_group", "type": "nominal", "title": "Age group"},
+          {"field": "Year", "type": "nominal", "title": "Financial year"},
+          {"field": "Definition", "type": "nominal", "title": "Measure"},
+          {
+            "field": "Percent",
+            "type": "quantitative",
+            "title": "Percentage (%)",
+            "format": ".1f"
+          },
+          {
+            "field": "MOE95_pp",
+            "type": "quantitative",
+            "title": "95% margin of error (± percentage points)",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {"filter": "ageSelect != 'All' && datum.Age_group == ageSelect"},
+        {
+          "calculate": "format(datum.Percent, '.1f') + '%'",
+          "as": "PercentLabel"
+        }
+      ],
+      "mark": {"type": "text", "dy": -14, "fontSize": 12, "fontWeight": "bold"},
+      "encoding": {
+        "y": {
+          "field": "Percent",
+          "type": "quantitative",
+          "scale": {"domain": [0, 25], "nice": false},
+          "axis": null
+        },
+        "color": {
+          "field": "Age_group",
+          "type": "nominal",
+          "title": "Age group (years)",
+          "scale": {
+            "domain": [
+              "15–24",
+              "25–34",
+              "35–44",
+              "45–54",
+              "55–64",
+              "65–74",
+              "75–84",
+              "85 and over"
+            ],
+            "range": [
+              "#4477AA",
+              "#EE7733",
+              "#228833",
+              "#CCBB44",
+              "#66CCEE",
+              "#AA3377",
+              "#332288",
+              "#777777"
+            ]
+          },
+          "legend": {
+            "orient": "right",
+            "labelFontSize": 12,
+            "titleFontSize": 13,
+            "labelLimit": 140,
+            "symbolStrokeWidth": 3
+          }
+        },
+        "text": {"field": "PercentLabel"},
+        "tooltip": [
+          {"field": "Age_group", "type": "nominal", "title": "Age group"},
+          {"field": "Year", "type": "nominal", "title": "Financial year"},
+          {"field": "Definition", "type": "nominal", "title": "Measure"},
+          {
+            "field": "Percent",
+            "type": "quantitative",
+            "title": "Percentage (%)",
+            "format": ".1f"
+          },
+          {
+            "field": "MOE95_pp",
+            "type": "quantitative",
+            "title": "95% margin of error (± percentage points)",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "data": {"values": [{}]},
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "fontSize": 11,
+        "color": "#627583"
+      },
+      "encoding": {
+        "x": {"value": 0},
+        "y": {"value": 455},
+        "text": {
+          "value": "Source: ABS Patient Experiences, 2024–25, Tables 14.3 and 14.4."
+        }
+      }
+    }
+  ],
+  "config": {
+    "font": "Arial",
+    "view": {"stroke": null},
+    "axis": {"grid": false},
+    "legend": {"padding": 10}
+  }
+}

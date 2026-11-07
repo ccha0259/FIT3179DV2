@@ -1,0 +1,59 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Dentist availability across Australia",
+    "subtitle": "Full-time-equivalent dentists per 100,000 people, 2014"
+  },
+  "width": 640,
+  "height": 420,
+  "projection": {"type": "equalEarth", "rotate": [-134, 0, 0]},
+  "data": {
+    "url": "https://raw.githubusercontent.com/ccha0259/FIT3179-DV2/main/australia_states.topojson",
+    "format": {"type": "topojson", "feature": "states"}
+  },
+  "transform": [
+    {
+      "lookup": "properties.state",
+      "from": {
+        "data": {
+          "url": "https://raw.githubusercontent.com/ccha0259/FIT3179-DV2/refs/heads/main/AIHM_workforce_i2_2014.csv",
+          "format": {
+            "type": "csv",
+            "parse": {"Year": "number", "FTE_per_100k": "number"}
+          }
+        },
+        "key": "State",
+        "fields": ["Year", "FTE_per_100k"]
+      }
+    }
+  ],
+  "mark": {"type": "geoshape", "stroke": "white", "strokeWidth": 1},
+  "encoding": {
+    "color": {
+      "condition": {
+        "test": "isValid(datum.FTE_per_100k)",
+        "field": "FTE_per_100k",
+        "type": "quantitative",
+        "title": ["FTE dentists", "per 100,000 people"],
+        "scale": {"scheme": "blues", "domain": [30, 70]},
+        "legend": {"values": [30, 40, 50, 60, 70]}
+      },
+      "value": "#eeeeee"
+    },
+    "tooltip": [
+      {
+        "field": "properties.state",
+        "type": "nominal",
+        "title": "State or territory"
+      },
+      {"field": "Year", "type": "ordinal", "title": "Year"},
+      {
+        "field": "FTE_per_100k",
+        "type": "quantitative",
+        "title": "FTE dentists per 100,000 people",
+        "format": ".1f"
+      }
+    ]
+  },
+  "config": {"view": {"stroke": null}, "font": "Arial", "background": "white"}
+}

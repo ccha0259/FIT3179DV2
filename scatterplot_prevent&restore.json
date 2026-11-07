@@ -1,0 +1,126 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Preventive and restorative CDBS service rates, 2024. Source: AIHW Dental care, Interactive 19. Original data: Services Australia.",
+  "width": 660,
+  "height": 400,
+  "padding": 20,
+  "background": "white",
+  "title": {
+    "text": "Preventive and restorative dental services",
+    "subtitle": [
+      "Child Dental Benefits Schedule, 2024",
+      "Each point represents a state or territory."
+    ],
+    "anchor": "start",
+    "fontSize": 21,
+    "subtitleFontSize": 12,
+    "offset": 18
+  },
+  "data": {
+    "url": "https://raw.githubusercontent.com/ccha0259/FIT3179-DV2/refs/heads/main/AIHM_preventive_restorative.csv",
+    "format": {
+      "type": "csv",
+      "parse": {
+        "Year": "number",
+        "Preventive_per_100k": "number",
+        "Restorative_per_100k": "number"
+      }
+    }
+  },
+  "params": [
+    {
+      "name": "highlightState",
+      "value": "All states",
+      "bind": {
+        "input": "select",
+        "name": "Highlight state: ",
+        "options": [
+          "All states",
+          "NSW",
+          "VIC",
+          "QLD",
+          "WA",
+          "SA",
+          "TAS",
+          "ACT",
+          "NT"
+        ]
+      }
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "Preventive_per_100k",
+      "type": "quantitative",
+      "title": "Preventive services per 100,000 population",
+      "scale": {"domain": [0, 12000], "nice": false},
+      "axis": {"format": ",.0f", "tickCount": 7}
+    },
+    "y": {
+      "field": "Restorative_per_100k",
+      "type": "quantitative",
+      "title": "Restorative services per 100,000 population",
+      "scale": {"domain": [0, 2500], "nice": false},
+      "axis": {"format": ",.0f", "tickCount": 6}
+    },
+    "opacity": {
+      "condition": {
+        "test": "highlightState === 'All states' || datum.State === highlightState",
+        "value": 1
+      },
+      "value": 0.2
+    },
+    "tooltip": [
+      {"field": "State_name", "type": "nominal", "title": "State or territory"},
+      {"field": "Year", "type": "ordinal", "title": "Year"},
+      {
+        "field": "Preventive_per_100k",
+        "type": "quantitative",
+        "title": "Preventive services per 100,000 population",
+        "format": ",.0f"
+      },
+      {
+        "field": "Restorative_per_100k",
+        "type": "quantitative",
+        "title": "Restorative services per 100,000 population",
+        "format": ",.0f"
+      }
+    ]
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 150,
+        "color": "#427aab",
+        "stroke": "white",
+        "strokeWidth": 1.5
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "baseline": "middle",
+        "dy": {"expr": "datum.State === 'SA' ? 18 : -16"},
+        "color": "#213b4c"
+      },
+      "encoding": {"text": {"field": "State"}}
+    }
+  ],
+  "config": {
+    "font": "Arial",
+    "view": {"stroke": null},
+    "axis": {
+      "domain": false,
+      "ticks": false,
+      "grid": true,
+      "gridColor": "#e8edf1",
+      "labelFontSize": 12,
+      "titleFontSize": 13,
+      "titlePadding": 14
+    }
+  }
+}

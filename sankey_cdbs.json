@@ -1,0 +1,434 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "width": 1300,
+  "height": 904,
+  "padding": 20,
+  "background": "white",
+  "title": {
+    "text": "How are subsidised dental services distributed?",
+    "subtitle": [
+      "Child Dental Benefits Schedule, Australia, 2024",
+      "Ribbon thickness represents service counts. This is a service breakdown, not patient movement."
+    ],
+    "anchor": "start",
+    "fontSize": 20,
+    "subtitleFontSize": 12,
+    "offset": 32
+  },
+  "signals": [
+    {
+      "name": "serviceFilter",
+      "value": "All",
+      "bind": {
+        "input": "select",
+        "options": [
+          "All",
+          "Diagnostic",
+          "Preventive",
+          "Periodontics",
+          "Oral Surgery",
+          "Endodontic",
+          "Restorative",
+          "Prosthodontic",
+          "General Services"
+        ],
+        "name": "Show service type: "
+      }
+    },
+    {"name": "nodeGap", "value": 20},
+    {"name": "nodeWidth", "value": 14},
+    {"name": "leftX", "value": 24},
+    {"name": "typeX", "value": 360},
+    {"name": "subgroupX", "value": 600},
+    {
+      "name": "totalServices",
+      "update": "data('totals').length ? max(1, data('totals')[0].Services) : 1"
+    },
+    {
+      "name": "unitHeight",
+      "update": "(height - nodeGap * max(0, length(data('raw')) - 1)) / totalServices"
+    },
+    {"name": "rootY", "update": "nodeGap * max(0, length(data('raw')) - 1) / 2"}
+  ],
+  "data": [
+    {
+      "name": "raw",
+      "url": "https://raw.githubusercontent.com/ccha0259/FIT3179-DV2/refs/heads/main/AIHM_cdbs_sankey.csv",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "Year": "number",
+          "Services": "number",
+          "Type_order": "number",
+          "Subgroup_order": "number"
+        },
+        "delimiter": ","
+      },
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.Year == 2024 && datum.Services > 0 && (serviceFilter == 'All' || datum.Service_type == serviceFilter)"
+        }
+      ]
+    },
+    {
+      "name": "totals",
+      "source": "raw",
+      "transform": [
+        {
+          "type": "aggregate",
+          "fields": ["Services"],
+          "ops": ["sum"],
+          "as": ["Services"]
+        }
+      ]
+    },
+    {
+      "name": "leaves",
+      "source": "raw",
+      "transform": [
+        {
+          "type": "stack",
+          "field": "Services",
+          "sort": {
+            "field": ["Type_order", "Subgroup_order"],
+            "order": ["ascending", "ascending"]
+          },
+          "as": ["start", "end"]
+        },
+        {
+          "type": "window",
+          "sort": {
+            "field": ["Type_order", "Subgroup_order"],
+            "order": ["ascending", "ascending"]
+          },
+          "ops": ["row_number"],
+          "as": ["rowIndex"]
+        },
+        {
+          "type": "formula",
+          "expr": "datum.start * unitHeight + nodeGap * (datum.rowIndex - 1)",
+          "as": "y0"
+        },
+        {
+          "type": "formula",
+          "expr": "datum.y0 + datum.Services * unitHeight",
+          "as": "y1"
+        },
+        {
+          "type": "formula",
+          "expr": "datum.Subgroup == 'No subgroup' ? 'Periodontic services' : datum.Subgroup",
+          "as": "Label"
+        }
+      ]
+    },
+    {
+      "name": "categories",
+      "source": "leaves",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["Service_type"],
+          "fields": ["Services", "start", "rowIndex", "Services", "Type_order"],
+          "ops": ["sum", "min", "min", "count", "min"],
+          "as": ["Services", "start", "firstRow", "leafCount", "Type_order"]
+        },
+        {
+          "type": "collect",
+          "sort": {"field": "Type_order", "order": "ascending"}
+        },
+        {
+          "type": "formula",
+          "expr": "datum.start * unitHeight + nodeGap * (datum.firstRow - 1 + (datum.leafCount - 1) / 2)",
+          "as": "y0"
+        },
+        {
+          "type": "formula",
+          "expr": "datum.y0 + datum.Services * unitHeight",
+          "as": "y1"
+        }
+      ]
+    },
+    {
+      "name": "rootLinks",
+      "source": "categories",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "rootY + datum.start * unitHeight",
+          "as": "sy0"
+        },
+        {
+          "type": "formula",
+          "expr": "datum.sy0 + datum.Services * unitHeight",
+          "as": "sy1"
+        },
+        {"type": "formula", "expr": "datum.y0", "as": "ty0"},
+        {"type": "formula", "expr": "datum.y1", "as": "ty1"},
+        {
+          "type": "formula",
+          "expr": "\"M\" + (leftX + nodeWidth) + \",\" + datum.sy0 + \" C\" + (((leftX + nodeWidth)+(typeX))/2) + \",\" + datum.sy0 + \" \" + (((leftX + nodeWidth)+(typeX))/2) + \",\" + datum.ty0 + \" \" + (typeX) + \",\" + datum.ty0 + \" L\" + (typeX) + \",\" + datum.ty1 + \" C\" + (((leftX + nodeWidth)+(typeX))/2) + \",\" + datum.ty1 + \" \" + (((leftX + nodeWidth)+(typeX))/2) + \",\" + datum.sy1 + \" \" + (leftX + nodeWidth) + \",\" + datum.sy1 + \" Z\"",
+          "as": "path"
+        }
+      ]
+    },
+    {
+      "name": "subLinks",
+      "source": "leaves",
+      "transform": [
+        {
+          "type": "lookup",
+          "from": "categories",
+          "key": "Service_type",
+          "fields": ["Service_type"],
+          "as": ["parent"]
+        },
+        {
+          "type": "formula",
+          "expr": "datum.parent.y0 + (datum.start - datum.parent.start) * unitHeight",
+          "as": "sy0"
+        },
+        {
+          "type": "formula",
+          "expr": "datum.sy0 + datum.Services * unitHeight",
+          "as": "sy1"
+        },
+        {"type": "formula", "expr": "datum.y0", "as": "ty0"},
+        {"type": "formula", "expr": "datum.y1", "as": "ty1"},
+        {
+          "type": "formula",
+          "expr": "\"M\" + (typeX + nodeWidth) + \",\" + datum.sy0 + \" C\" + (((typeX + nodeWidth)+(subgroupX))/2) + \",\" + datum.sy0 + \" \" + (((typeX + nodeWidth)+(subgroupX))/2) + \",\" + datum.ty0 + \" \" + (subgroupX) + \",\" + datum.ty0 + \" L\" + (subgroupX) + \",\" + datum.ty1 + \" C\" + (((typeX + nodeWidth)+(subgroupX))/2) + \",\" + datum.ty1 + \" \" + (((typeX + nodeWidth)+(subgroupX))/2) + \",\" + datum.sy1 + \" \" + (typeX + nodeWidth) + \",\" + datum.sy1 + \" Z\"",
+          "as": "path"
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": [
+        "Diagnostic",
+        "Preventive",
+        "Periodontics",
+        "Oral Surgery",
+        "Endodontic",
+        "Restorative",
+        "Prosthodontic",
+        "General Services"
+      ],
+      "range": [
+        "#4477AA",
+        "#228833",
+        "#66CCEE",
+        "#AA3377",
+        "#CC6677",
+        "#EEAA33",
+        "#882255",
+        "#888888"
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "type": "path",
+      "from": {"data": "rootLinks"},
+      "encode": {
+        "update": {
+          "path": {"field": "path"},
+          "fill": {"scale": "color", "field": "Service_type"},
+          "fillOpacity": {"value": 0.25},
+          "tooltip": {
+            "signal": "{'Year': 2024, 'Service type': datum.Service_type, 'Services': format(datum.Services, ',.0f'), 'Share of displayed services': format(datum.Services / totalServices, '.1%')}"
+          }
+        },
+        "hover": {"fillOpacity": {"value": 0.75}}
+      }
+    },
+    {
+      "type": "path",
+      "from": {"data": "subLinks"},
+      "encode": {
+        "update": {
+          "path": {"field": "path"},
+          "fill": {"scale": "color", "field": "Service_type"},
+          "fillOpacity": {"value": 0.3},
+          "tooltip": {
+            "signal": "{'Year': datum.Year, 'Service type': datum.Service_type, 'Subgroup': datum.Subgroup, 'Services': format(datum.Services, ',.0f'), 'Share of displayed services': format(datum.Services / totalServices, '.2%')}"
+          }
+        },
+        "hover": {"fillOpacity": {"value": 0.8}}
+      }
+    },
+    {
+      "type": "rect",
+      "from": {"data": "totals"},
+      "encode": {
+        "update": {
+          "x": {"signal": "leftX"},
+          "width": {"signal": "nodeWidth"},
+          "y": {"signal": "rootY"},
+          "height": {"signal": "datum.Services * unitHeight"},
+          "fill": {"value": "#536878"},
+          "tooltip": {
+            "signal": "{'Year': 2024, 'Displayed services': format(datum.Services, ',.0f')}"
+          }
+        }
+      }
+    },
+    {
+      "type": "rect",
+      "from": {"data": "categories"},
+      "encode": {
+        "update": {
+          "x": {"signal": "typeX"},
+          "width": {"signal": "nodeWidth"},
+          "y": {"field": "y0"},
+          "y2": {"field": "y1"},
+          "fill": {"scale": "color", "field": "Service_type"},
+          "tooltip": {
+            "signal": "{'Year': 2024, 'Service type': datum.Service_type, 'Services': format(datum.Services, ',.0f'), 'Share of displayed services': format(datum.Services / totalServices, '.1%')}"
+          }
+        }
+      }
+    },
+    {
+      "type": "rect",
+      "from": {"data": "leaves"},
+      "encode": {
+        "update": {
+          "x": {"signal": "subgroupX"},
+          "width": {"signal": "nodeWidth"},
+          "y": {"field": "y0"},
+          "y2": {"field": "y1"},
+          "fill": {"scale": "color", "field": "Service_type"},
+          "tooltip": {
+            "signal": "{'Year': datum.Year, 'Service type': datum.Service_type, 'Subgroup': datum.Subgroup, 'Services': format(datum.Services, ',.0f'), 'Share of displayed services': format(datum.Services / totalServices, '.2%')}"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "totals"},
+      "encode": {
+        "update": {
+          "x": {"signal": "leftX + nodeWidth + 10"},
+          "y": {"signal": "rootY + datum.Services * unitHeight / 2 - 8"},
+          "text": {
+            "signal": "serviceFilter == 'All' ? 'All CDBS services' : 'Selected CDBS services'"
+          },
+          "fontSize": {"value": 12},
+          "fontWeight": {"value": "bold"},
+          "fill": {"value": "#243746"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "totals"},
+      "encode": {
+        "update": {
+          "x": {"signal": "leftX + nodeWidth + 10"},
+          "y": {"signal": "rootY + datum.Services * unitHeight / 2 + 8"},
+          "text": {"signal": "format(datum.Services, ',.0f')"},
+          "fontSize": {"value": 12},
+          "fill": {"value": "#243746"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "categories"},
+      "encode": {
+        "update": {
+          "x": {"signal": "typeX - 10"},
+          "y": {"signal": "(datum.y0 + datum.y1) / 2 - 6"},
+          "text": {"field": "Service_type"},
+          "align": {"value": "right"},
+          "baseline": {"value": "middle"},
+          "fontSize": {"value": 12},
+          "fontWeight": {"value": "bold"},
+          "fill": {"value": "#243746"},
+          "tooltip": {
+            "signal": "{'Year': 2024, 'Service type': datum.Service_type, 'Services': format(datum.Services, ',.0f'), 'Share of displayed services': format(datum.Services / totalServices, '.1%')}"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "categories"},
+      "encode": {
+        "update": {
+          "x": {"signal": "typeX - 10"},
+          "y": {"signal": "(datum.y0 + datum.y1) / 2 + 9"},
+          "text": {"signal": "format(datum.Services, ',.0f')"},
+          "align": {"value": "right"},
+          "baseline": {"value": "middle"},
+          "fontSize": {"value": 11},
+          "fill": {"value": "#243746"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "leaves"},
+      "encode": {
+        "update": {
+          "x": {"signal": "subgroupX + nodeWidth + 10"},
+          "y": {"signal": "(datum.y0 + datum.y1) / 2"},
+          "text": {
+            "signal": "datum.Label + ' (' + format(datum.Services, ',.0f') + ')'"
+          },
+          "baseline": {"value": "middle"},
+          "fontSize": {"value": 11},
+          "fill": {"value": "#243746"},
+          "tooltip": {
+            "signal": "{'Year': datum.Year, 'Service type': datum.Service_type, 'Subgroup': datum.Subgroup, 'Services': format(datum.Services, ',.0f'), 'Share of displayed services': format(datum.Services / totalServices, '.2%')}"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "encode": {
+        "update": {
+          "x": {"signal": "leftX"},
+          "y": {"value": -15},
+          "text": {"value": "Services"},
+          "fontSize": {"value": 12},
+          "fontWeight": {"value": "bold"},
+          "fill": {"value": "#243746"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "encode": {
+        "update": {
+          "x": {"signal": "typeX"},
+          "y": {"value": -15},
+          "text": {"value": "Service type"},
+          "fontSize": {"value": 12},
+          "fontWeight": {"value": "bold"},
+          "fill": {"value": "#243746"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "encode": {
+        "update": {
+          "x": {"signal": "subgroupX"},
+          "y": {"value": -15},
+          "text": {"value": "Service subgroup"},
+          "fontSize": {"value": 12},
+          "fontWeight": {"value": "bold"},
+          "fill": {"value": "#243746"}
+        }
+      }
+    }
+  ],
+  "config": {"font": "Arial"}
+}

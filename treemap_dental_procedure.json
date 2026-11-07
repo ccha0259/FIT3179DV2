@@ -1,0 +1,247 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "National hospital dental procedure counts by ACHI subchapter, 2024–25.",
+  "width": 950,
+  "height": 560,
+  "padding": 20,
+  "background": "white",
+  "title": {
+    "text": "Which dental procedures are most common in hospitals?",
+    "subtitle": [
+      "Australia, 2024–25 · 491,275 procedures",
+      "Rectangle area represents procedure count. A hospital admission may include multiple procedures."
+    ],
+    "anchor": "start",
+    "fontSize": 21,
+    "subtitleFontSize": 12,
+    "offset": 20
+  },
+  "signals": [
+    {
+      "name": "highlight",
+      "value": "All",
+      "bind": {
+        "input": "select",
+        "options": [
+          "All",
+          "Diagnostic Dental Services",
+          "Preventative Dental Services",
+          "Periodontic Interventions",
+          "Oral Surgery",
+          "Endodontics",
+          "Restorative Dental Services",
+          "Prosthodontics",
+          "Orthodontics",
+          "General Dental Services",
+          "Miscellaneous Dental Services"
+        ],
+        "name": "Highlight a category: "
+      }
+    },
+    {
+      "name": "totalProcedures",
+      "update": "data('totals').length ? data('totals')[0].Total : 1"
+    }
+  ],
+  "data": [
+    {
+      "name": "raw",
+      "url": "https://raw.githubusercontent.com/ccha0259/FIT3179-DV2/refs/heads/main/AIHM_dental_procedure.csv",
+      "format": {
+        "type": "csv",
+        "parse": {"Procedures": "number"},
+        "delimiter": ","
+      },
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.Year == '2024–25' && datum.Procedures > 0"
+        }
+      ]
+    },
+    {
+      "name": "totals",
+      "source": "raw",
+      "transform": [
+        {
+          "type": "aggregate",
+          "fields": ["Procedures"],
+          "ops": ["sum"],
+          "as": ["Total"]
+        }
+      ]
+    },
+    {
+      "name": "tree",
+      "source": "raw",
+      "transform": [
+        {"type": "nest"},
+        {
+          "type": "treemap",
+          "field": "Procedures",
+          "sort": {"field": "value", "order": "descending"},
+          "method": "squarify",
+          "round": false,
+          "paddingInner": 0,
+          "paddingOuter": 0,
+          "size": [{"signal": "width"}, {"signal": "height"}]
+        },
+        {
+          "type": "formula",
+          "expr": "replace(datum.Procedure_type, ' Dental Services', '')",
+          "as": "Label"
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": [
+        "Diagnostic Dental Services",
+        "Preventative Dental Services",
+        "Periodontic Interventions",
+        "Oral Surgery",
+        "Endodontics",
+        "Restorative Dental Services",
+        "Prosthodontics",
+        "Orthodontics",
+        "General Dental Services",
+        "Miscellaneous Dental Services"
+      ],
+      "range": [
+        "#4477AA",
+        "#228833",
+        "#66CCEE",
+        "#AA3377",
+        "#CC6677",
+        "#EEAA33",
+        "#882255",
+        "#44AA99",
+        "#888888",
+        "#999933"
+      ]
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "orient": "right",
+      "title": "Category",
+      "titleFontSize": 13,
+      "labelFontSize": 12,
+      "labelLimit": 300,
+      "symbolType": "square",
+      "symbolSize": 120,
+      "rowPadding": 10,
+      "offset": 20
+    }
+  ],
+  "marks": [
+    {
+      "name": "tiles",
+      "type": "rect",
+      "from": {"data": "tree"},
+      "encode": {
+        "update": {
+          "x": {"field": "x0"},
+          "y": {"field": "y0"},
+          "x2": {"field": "x1"},
+          "y2": {"field": "y1"},
+          "fill": {"scale": "color", "field": "Procedure_type"},
+          "fillOpacity": {
+            "signal": "highlight == 'All' || highlight == datum.Procedure_type ? 1 : 0.18"
+          },
+          "stroke": {"value": "white"},
+          "strokeWidth": {"value": 1},
+          "tooltip": {
+            "signal": "{'Year':datum.Year, 'Procedure category':datum.Procedure_type, 'ACHI code':datum.ACHI_code, 'Procedures':format(datum.Procedures, ',.0f'), 'Share of all dental procedures':format(datum.Procedures/totalProcedures, '.2%')}"
+          }
+        },
+        "hover": {"stroke": {"value": "#243746"}, "strokeWidth": {"value": 2}}
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "tree"},
+      "interactive": false,
+      "encode": {
+        "update": {
+          "x": {"signal": "(datum.x0 + datum.x1)/2"},
+          "y": {"signal": "(datum.y0 + datum.y1)/2 - 23"},
+          "text": {"signal": "split(datum.Label, ' ')"},
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"},
+          "lineHeight": {"value": 17},
+          "fontSize": {"value": 13},
+          "fontWeight": {"value": "bold"},
+          "fill": {
+            "signal": "indexof(['Diagnostic Dental Services','Preventative Dental Services','Oral Surgery','Prosthodontics'], datum.Procedure_type) >= 0 ? 'white' : '#172f3e'"
+          },
+          "limit": {"signal": "max(0, datum.x1 - datum.x0 - 12)"},
+          "opacity": {
+            "signal": "datum.x1 - datum.x0 > 85 && datum.y1 - datum.y0 > 95 && (highlight == 'All' || highlight == datum.Procedure_type) ? 1 : 0"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "tree"},
+      "interactive": false,
+      "encode": {
+        "update": {
+          "x": {"signal": "(datum.x0 + datum.x1)/2"},
+          "y": {"signal": "(datum.y0 + datum.y1)/2 + 18"},
+          "text": {"signal": "format(datum.Procedures, ',.0f')"},
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"},
+          "fontSize": {"value": 15},
+          "fill": {
+            "signal": "indexof(['Diagnostic Dental Services','Preventative Dental Services','Oral Surgery','Prosthodontics'], datum.Procedure_type) >= 0 ? 'white' : '#172f3e'"
+          },
+          "opacity": {
+            "signal": "datum.x1 - datum.x0 > 85 && datum.y1 - datum.y0 > 95 && (highlight == 'All' || highlight == datum.Procedure_type) ? 1 : 0"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {"data": "tree"},
+      "interactive": false,
+      "encode": {
+        "update": {
+          "x": {"signal": "(datum.x0 + datum.x1)/2"},
+          "y": {"signal": "(datum.y0 + datum.y1)/2 + 39"},
+          "text": {"signal": "format(datum.Procedures/totalProcedures, '.1%')"},
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"},
+          "fontSize": {"value": 12},
+          "fill": {
+            "signal": "indexof(['Diagnostic Dental Services','Preventative Dental Services','Oral Surgery','Prosthodontics'], datum.Procedure_type) >= 0 ? 'white' : '#172f3e'"
+          },
+          "opacity": {
+            "signal": "datum.x1 - datum.x0 > 85 && datum.y1 - datum.y0 > 95 && (highlight == 'All' || highlight == datum.Procedure_type) ? 1 : 0"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "encode": {
+        "update": {
+          "x": {"value": 0},
+          "y": {"signal": "height + 26"},
+          "text": {
+            "value": "Source: AIHW National Hospital Morbidity Database, Interactive 2a."
+          },
+          "fontSize": {"value": 11},
+          "fill": {"value": "#536878"}
+        }
+      }
+    }
+  ],
+  "config": {"font": "Arial"}
+}

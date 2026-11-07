@@ -1,0 +1,94 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Potentially preventable dental hospitalisations",
+    "subtitle": "Number of hospitalisations by state and territory, 2014–15"
+  },
+  "width": 640,
+  "height": 420,
+  "projection": {"type": "equalEarth", "rotate": [-134, 0, 0]},
+  "data": {
+    "url": "https://raw.githubusercontent.com/ccha0259/FIT3179-DV2/main/australia_states.topojson",
+    "format": {"type": "topojson", "feature": "states"}
+  },
+  "transform": [
+    {
+      "lookup": "properties.state",
+      "from": {
+        "data": {
+          "url": "https://raw.githubusercontent.com/ccha0259/FIT3179-DV2/refs/heads/main/AIHM_hospitalisation_2014.csv",
+          "format": {"type": "csv", "parse": {"Hospitalisations": "number"}}
+        },
+        "key": "State",
+        "fields": ["Year", "Hospitalisations"]
+      }
+    },
+    {
+      "calculate": "isValid(datum.Hospitalisations) ? toNumber(datum.Hospitalisations) : null",
+      "as": "Hospitalisations"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "geoshape",
+        "fill": "#eeeeee",
+        "stroke": "white",
+        "strokeWidth": 1
+      }
+    },
+    {
+      "transform": [
+        {"calculate": "geoCentroid(null, datum)", "as": "centroid"},
+        {"calculate": "datum.centroid[0]", "as": "Longitude"},
+        {"calculate": "datum.centroid[1]", "as": "Latitude"},
+        {
+          "filter": "isValid(datum.Hospitalisations) && datum.Hospitalisations >= 0"
+        }
+      ],
+      "mark": {
+        "type": "circle",
+        "color": "#6097ce",
+        "opacity": 0.85,
+        "stroke": "white",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "longitude": {"field": "Longitude", "type": "quantitative"},
+        "latitude": {"field": "Latitude", "type": "quantitative"},
+        "size": {
+          "field": "Hospitalisations",
+          "type": "quantitative",
+          "title": "Hospitalisations",
+          "scale": {
+            "type": "linear",
+            "zero": true,
+            "domain": [0, 25000],
+            "range": [0, 5000]
+          },
+          "legend": {"values": [5000, 10000, 15000, 20000], "format": ",.0f"}
+        },
+        "order": {
+          "field": "Hospitalisations",
+          "type": "quantitative",
+          "sort": "descending"
+        },
+        "tooltip": [
+          {
+            "field": "properties.state",
+            "type": "nominal",
+            "title": "State or territory"
+          },
+          {"field": "Year", "type": "nominal", "title": "Financial year"},
+          {
+            "field": "Hospitalisations",
+            "type": "quantitative",
+            "title": "Hospitalisations",
+            "format": ",.0f"
+          }
+        ]
+      }
+    }
+  ],
+  "config": {"view": {"stroke": null}, "font": "Arial", "background": "white"}
+}
