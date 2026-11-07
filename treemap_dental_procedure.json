@@ -49,7 +49,9 @@
       "url": "https://raw.githubusercontent.com/ccha0259/FIT3179-DV2/refs/heads/main/AIHM_dental_procedure.csv",
       "format": {
         "type": "csv",
-        "parse": {"Procedures": "number"},
+        "parse": {
+          "Procedures": "number"
+        },
         "delimiter": ","
       },
       "transform": [
@@ -65,9 +67,15 @@
       "transform": [
         {
           "type": "aggregate",
-          "fields": ["Procedures"],
-          "ops": ["sum"],
-          "as": ["Total"]
+          "fields": [
+            "Procedures"
+          ],
+          "ops": [
+            "sum"
+          ],
+          "as": [
+            "Total"
+          ]
         }
       ]
     },
@@ -75,16 +83,28 @@
       "name": "tree",
       "source": "raw",
       "transform": [
-        {"type": "nest"},
+        {
+          "type": "nest"
+        },
         {
           "type": "treemap",
           "field": "Procedures",
-          "sort": {"field": "value", "order": "descending"},
+          "sort": {
+            "field": "value",
+            "order": "descending"
+          },
           "method": "squarify",
           "round": false,
           "paddingInner": 0,
           "paddingOuter": 0,
-          "size": [{"signal": "width"}, {"signal": "height"}]
+          "size": [
+            {
+              "signal": "width"
+            },
+            {
+              "signal": "height"
+            }
+          ]
         },
         {
           "type": "formula",
@@ -114,10 +134,10 @@
         "#4477AA",
         "#228833",
         "#66CCEE",
-        "#AA3377",
+        "#7B2CBF",
         "#CC6677",
         "#EEAA33",
-        "#882255",
+        "#F28E2B",
         "#44AA99",
         "#888888",
         "#999933"
@@ -142,85 +162,87 @@
     {
       "name": "tiles",
       "type": "rect",
-      "from": {"data": "tree"},
+      "from": {
+        "data": "tree"
+      },
       "encode": {
         "update": {
-          "x": {"field": "x0"},
-          "y": {"field": "y0"},
-          "x2": {"field": "x1"},
-          "y2": {"field": "y1"},
-          "fill": {"scale": "color", "field": "Procedure_type"},
+          "x": {
+            "field": "x0"
+          },
+          "y": {
+            "field": "y0"
+          },
+          "x2": {
+            "field": "x1"
+          },
+          "y2": {
+            "field": "y1"
+          },
+          "fill": {
+            "scale": "color",
+            "field": "Procedure_type"
+          },
           "fillOpacity": {
             "signal": "highlight == 'All' || highlight == datum.Procedure_type ? 1 : 0.18"
           },
-          "stroke": {"value": "white"},
-          "strokeWidth": {"value": 1},
+          "stroke": {
+            "value": "white"
+          },
+          "strokeWidth": {
+            "value": 1
+          },
           "tooltip": {
             "signal": "{'Year':datum.Year, 'Procedure category':datum.Procedure_type, 'ACHI code':datum.ACHI_code, 'Procedures':format(datum.Procedures, ',.0f'), 'Share of all dental procedures':format(datum.Procedures/totalProcedures, '.2%')}"
           }
         },
-        "hover": {"stroke": {"value": "#243746"}, "strokeWidth": {"value": 2}}
-      }
-    },
-    {
-      "type": "text",
-      "from": {"data": "tree"},
-      "interactive": false,
-      "encode": {
-        "update": {
-          "x": {"signal": "(datum.x0 + datum.x1)/2"},
-          "y": {"signal": "(datum.y0 + datum.y1)/2 - 23"},
-          "text": {"signal": "split(datum.Label, ' ')"},
-          "align": {"value": "center"},
-          "baseline": {"value": "middle"},
-          "lineHeight": {"value": 17},
-          "fontSize": {"value": 13},
-          "fontWeight": {"value": "bold"},
-          "fill": {
-            "signal": "indexof(['Diagnostic Dental Services','Preventative Dental Services','Oral Surgery','Prosthodontics'], datum.Procedure_type) >= 0 ? 'white' : '#172f3e'"
+        "hover": {
+          "stroke": {
+            "value": "#243746"
           },
-          "limit": {"signal": "max(0, datum.x1 - datum.x0 - 12)"},
-          "opacity": {
-            "signal": "datum.x1 - datum.x0 > 85 && datum.y1 - datum.y0 > 95 && (highlight == 'All' || highlight == datum.Procedure_type) ? 1 : 0"
+          "strokeWidth": {
+            "value": 2
           }
         }
       }
     },
     {
       "type": "text",
-      "from": {"data": "tree"},
+      "from": {
+        "data": "tree"
+      },
       "interactive": false,
       "encode": {
         "update": {
-          "x": {"signal": "(datum.x0 + datum.x1)/2"},
-          "y": {"signal": "(datum.y0 + datum.y1)/2 + 18"},
-          "text": {"signal": "format(datum.Procedures, ',.0f')"},
-          "align": {"value": "center"},
-          "baseline": {"value": "middle"},
-          "fontSize": {"value": 15},
-          "fill": {
-            "signal": "indexof(['Diagnostic Dental Services','Preventative Dental Services','Oral Surgery','Prosthodontics'], datum.Procedure_type) >= 0 ? 'white' : '#172f3e'"
+          "x": {
+            "signal": "(datum.x0 + datum.x1)/2"
           },
-          "opacity": {
-            "signal": "datum.x1 - datum.x0 > 85 && datum.y1 - datum.y0 > 95 && (highlight == 'All' || highlight == datum.Procedure_type) ? 1 : 0"
-          }
-        }
-      }
-    },
-    {
-      "type": "text",
-      "from": {"data": "tree"},
-      "interactive": false,
-      "encode": {
-        "update": {
-          "x": {"signal": "(datum.x0 + datum.x1)/2"},
-          "y": {"signal": "(datum.y0 + datum.y1)/2 + 39"},
-          "text": {"signal": "format(datum.Procedures/totalProcedures, '.1%')"},
-          "align": {"value": "center"},
-          "baseline": {"value": "middle"},
-          "fontSize": {"value": 12},
+          "y": {
+            "signal": "(datum.y0 + datum.y1)/2 - 23"
+          },
+          "text": {
+            "signal": "split(datum.Label, ' ')"
+          },
+          "align": {
+            "value": "center"
+          },
+          "baseline": {
+            "value": "middle"
+          },
+          "lineHeight": {
+            "value": 17
+          },
+          "fontSize": {
+            "value": 13
+          },
+          "fontWeight": {
+            "value": "bold"
+          },
           "fill": {
-            "signal": "indexof(['Diagnostic Dental Services','Preventative Dental Services','Oral Surgery','Prosthodontics'], datum.Procedure_type) >= 0 ? 'white' : '#172f3e'"
+            "signal": "indexof(['Diagnostic Dental Services','Preventative Dental Services','Oral Surgery'], datum.Procedure_type) >= 0 ? 'white' : '#172f3e'"
+          },
+          "limit": {
+            "signal": "max(0, datum.x1 - datum.x0 - 12)"
           },
           "opacity": {
             "signal": "datum.x1 - datum.x0 > 85 && datum.y1 - datum.y0 > 95 && (highlight == 'All' || highlight == datum.Procedure_type) ? 1 : 0"
@@ -230,18 +252,98 @@
     },
     {
       "type": "text",
+      "from": {
+        "data": "tree"
+      },
+      "interactive": false,
       "encode": {
         "update": {
-          "x": {"value": 0},
-          "y": {"signal": "height + 26"},
+          "x": {
+            "signal": "(datum.x0 + datum.x1)/2"
+          },
+          "y": {
+            "signal": "(datum.y0 + datum.y1)/2 + 18"
+          },
+          "text": {
+            "signal": "format(datum.Procedures, ',.0f')"
+          },
+          "align": {
+            "value": "center"
+          },
+          "baseline": {
+            "value": "middle"
+          },
+          "fontSize": {
+            "value": 15
+          },
+          "fill": {
+            "signal": "indexof(['Diagnostic Dental Services','Preventative Dental Services','Oral Surgery'], datum.Procedure_type) >= 0 ? 'white' : '#172f3e'"
+          },
+          "opacity": {
+            "signal": "datum.x1 - datum.x0 > 85 && datum.y1 - datum.y0 > 95 && (highlight == 'All' || highlight == datum.Procedure_type) ? 1 : 0"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "tree"
+      },
+      "interactive": false,
+      "encode": {
+        "update": {
+          "x": {
+            "signal": "(datum.x0 + datum.x1)/2"
+          },
+          "y": {
+            "signal": "(datum.y0 + datum.y1)/2 + 39"
+          },
+          "text": {
+            "signal": "format(datum.Procedures/totalProcedures, '.1%')"
+          },
+          "align": {
+            "value": "center"
+          },
+          "baseline": {
+            "value": "middle"
+          },
+          "fontSize": {
+            "value": 12
+          },
+          "fill": {
+            "signal": "indexof(['Diagnostic Dental Services','Preventative Dental Services','Oral Surgery'], datum.Procedure_type) >= 0 ? 'white' : '#172f3e'"
+          },
+          "opacity": {
+            "signal": "datum.x1 - datum.x0 > 85 && datum.y1 - datum.y0 > 95 && (highlight == 'All' || highlight == datum.Procedure_type) ? 1 : 0"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "encode": {
+        "update": {
+          "x": {
+            "value": 0
+          },
+          "y": {
+            "signal": "height + 26"
+          },
           "text": {
             "value": "Source: AIHW National Hospital Morbidity Database, Interactive 2a."
           },
-          "fontSize": {"value": 11},
-          "fill": {"value": "#536878"}
+          "fontSize": {
+            "value": 11
+          },
+          "fill": {
+            "value": "#536878"
+          }
         }
       }
     }
   ],
-  "config": {"font": "Arial"}
+  "config": {
+    "font": "Arial"
+  }
 }
