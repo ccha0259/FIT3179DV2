@@ -1,0 +1,23 @@
+Year,Service_type,Subgroup,Services,Type_order,Subgroup_order
+2024,Diagnostic,Examinations,1299051,1,1
+2024,Diagnostic,Radiological Examinations and Interpretation,783279,1,2
+2024,Preventive,Dental Prophylaxis,975878,2,1
+2024,Preventive,Remineralisation Agents,873514,2,2
+2024,Preventive,Other Preventive Services,699271,2,3
+2024,Periodontics,No subgroup,3255,3,1
+2024,Oral Surgery,Extractions,126370,4,1
+2024,Oral Surgery,Surgical Extractions,6417,4,2
+2024,Oral Surgery,Other Surgical Procedures,1101,4,3
+2024,Oral Surgery,Treatment of Maxillofacial Injuries,7,4,4
+2024,Endodontic,Pulp and Root Canal Treatments,17403,5,1
+2024,Endodontic,Other Endodontic Services,289,5,2
+2024,Restorative,Metallic Restorations - Direct,517,6,1
+2024,Restorative,Adhesive Restorations - Anterior Teeth - Direct,55838,6,2
+2024,Restorative,Adhesive Restorations - Posterior Teeth - Direct,376874,6,3
+2024,Restorative,Other Restorative Services,48284,6,4
+2024,Prosthodontic,Denture and Denture Components,305,7,1
+2024,Prosthodontic,Denture Maintenance,21,7,2
+2024,Prosthodontic,Other Prosthodontic Services,653,7,3
+2024,Prosthodontic,Denture Repairs,25,7,4
+2024,General Services,Emergencies,968,8,1
+2024,General Services,Sedation,17224,8,2

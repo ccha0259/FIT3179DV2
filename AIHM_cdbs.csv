@@ -1,0 +1,33 @@
+Region,Code,Year,Service_type,Rate_per_100000,Order
+Australian Capital Territory,ACT,2024,Diagnostic,3603,1
+Australian Capital Territory,ACT,2024,Preventive,4278,2
+Australian Capital Territory,ACT,2024,Restorative,737,3
+Australian Capital Territory,ACT,2024,Other services,325,4
+New South Wales,NSW,2024,Diagnostic,7496,1
+New South Wales,NSW,2024,Preventive,9712,2
+New South Wales,NSW,2024,Restorative,1740,3
+New South Wales,NSW,2024,Other services,683,4
+Northern Territory,NT,2024,Diagnostic,3210,1
+Northern Territory,NT,2024,Preventive,3207,2
+Northern Territory,NT,2024,Restorative,843,3
+Northern Territory,NT,2024,Other services,376,4
+Queensland,QLD,2024,Diagnostic,8260,1
+Queensland,QLD,2024,Preventive,10019,2
+Queensland,QLD,2024,Restorative,2195,3
+Queensland,QLD,2024,Other services,651,4
+South Australia,SA,2024,Diagnostic,10825,1
+South Australia,SA,2024,Preventive,10069,2
+South Australia,SA,2024,Restorative,1716,3
+South Australia,SA,2024,Other services,746,4
+Tasmania,TAS,2024,Diagnostic,8137,1
+Tasmania,TAS,2024,Preventive,8300,2
+Tasmania,TAS,2024,Restorative,1928,3
+Tasmania,TAS,2024,Other services,634,4
+Victoria,VIC,2024,Diagnostic,8165,1
+Victoria,VIC,2024,Preventive,10862,2
+Victoria,VIC,2024,Restorative,1866,3
+Victoria,VIC,2024,Other services,665,4
+Western Australia,WA,2024,Diagnostic,4963,1
+Western Australia,WA,2024,Preventive,5078,2
+Western Australia,WA,2024,Restorative,1127,3
+Western Australia,WA,2024,Other services,460,4
