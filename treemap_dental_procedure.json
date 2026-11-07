@@ -131,16 +131,44 @@
         "Miscellaneous Dental Services"
       ],
       "range": [
-        "#4477AA",
-        "#228833",
-        "#66CCEE",
-        "#7B2CBF",
-        "#CC6677",
-        "#EEAA33",
-        "#F28E2B",
-        "#44AA99",
-        "#888888",
-        "#999933"
+        "#5F9ED1",
+        "#595959",
+        "#ABABAB",
+        "#006BA4",
+        "#C85200",
+        "#FF800E",
+        "#FFBC79",
+        "#A2C8EC",
+        "#898989",
+        "#CFCFCF"
+      ]
+    },
+    {
+      "name": "labelColor",
+      "type": "ordinal",
+      "domain": [
+        "Diagnostic Dental Services",
+        "Preventative Dental Services",
+        "Periodontic Interventions",
+        "Oral Surgery",
+        "Endodontics",
+        "Restorative Dental Services",
+        "Prosthodontics",
+        "Orthodontics",
+        "General Dental Services",
+        "Miscellaneous Dental Services"
+      ],
+      "range": [
+        "#111827",
+        "#FFFFFF",
+        "#111827",
+        "#FFFFFF",
+        "#FFFFFF",
+        "#111827",
+        "#111827",
+        "#111827",
+        "#111827",
+        "#111827"
       ]
     }
   ],
@@ -187,10 +215,11 @@
             "signal": "highlight == 'All' || highlight == datum.Procedure_type ? 1 : 0.18"
           },
           "stroke": {
-            "value": "white"
+            "scale": "labelColor",
+            "field": "Procedure_type"
           },
           "strokeWidth": {
-            "value": 1
+            "value": 1.5
           },
           "tooltip": {
             "signal": "{'Year':datum.Year, 'Procedure category':datum.Procedure_type, 'ACHI code':datum.ACHI_code, 'Procedures':format(datum.Procedures, ',.0f'), 'Share of all dental procedures':format(datum.Procedures/totalProcedures, '.2%')}"
@@ -239,7 +268,8 @@
             "value": "bold"
           },
           "fill": {
-            "signal": "indexof(['Diagnostic Dental Services','Preventative Dental Services','Oral Surgery'], datum.Procedure_type) >= 0 ? 'white' : '#172f3e'"
+            "scale": "labelColor",
+            "field": "Procedure_type"
           },
           "limit": {
             "signal": "max(0, datum.x1 - datum.x0 - 12)"
@@ -277,7 +307,8 @@
             "value": 15
           },
           "fill": {
-            "signal": "indexof(['Diagnostic Dental Services','Preventative Dental Services','Oral Surgery'], datum.Procedure_type) >= 0 ? 'white' : '#172f3e'"
+            "scale": "labelColor",
+            "field": "Procedure_type"
           },
           "opacity": {
             "signal": "datum.x1 - datum.x0 > 85 && datum.y1 - datum.y0 > 95 && (highlight == 'All' || highlight == datum.Procedure_type) ? 1 : 0"
@@ -312,7 +343,8 @@
             "value": 12
           },
           "fill": {
-            "signal": "indexof(['Diagnostic Dental Services','Preventative Dental Services','Oral Surgery'], datum.Procedure_type) >= 0 ? 'white' : '#172f3e'"
+            "scale": "labelColor",
+            "field": "Procedure_type"
           },
           "opacity": {
             "signal": "datum.x1 - datum.x0 > 85 && datum.y1 - datum.y0 > 95 && (highlight == 'All' || highlight == datum.Procedure_type) ? 1 : 0"
